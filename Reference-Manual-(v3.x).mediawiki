@@ -2283,7 +2283,7 @@ SecRule REQUEST_BODY "^username=(\w{25,})" phase:2,capture,t:none,chain,id:105
   SecRule TX:1 "(?:(?:a(dmin|nonymous)))"
 </pre>
 
-Up to 10 captures will be copied on a successful pattern match, each with a name consisting of a digit from 0 to 9. The TX.0 variable always contains the entire area that the regular expression matched. All the other variables contain the captured values, in the order in which the capturing parentheses appear in the regular expression.
+Up to 100 captures will be copied on a successful pattern match, each with a name consisting of a number from 0 to 99. The TX.0 variable always contains the entire area that the regular expression matched. All the other variables contain the captured values, in the order in which the capturing parentheses appear in the regular expression.
 
 == chain ==
 '''Description:''' Chains the current rule with the rule that immediately follows it, creating a rule chain. Chained rules allow for more complex processing logic.
@@ -2363,20 +2363,7 @@ Example:
 <code>SecRule REQUEST_HEADERS:User-Agent "nikto" "log,deny,id:107,msg:'Nikto Scanners Identified'"</code>
 
 == deprecatevar ==
-'''Description''': Decrements numerical value over time, which makes sense only applied to the variables stored in persistent storage.
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
-
-'''Action Group:''' Non-Disruptive
-
-Example: The following example will decrement the counter by 60 every 300 seconds.
-<pre>
-SecAction phase:5,id:108,nolog,pass,deprecatevar:SESSION.score=60/300
-</pre>
-
-Counter values are always positive, meaning that the value will never go below zero. Unlike expirevar, the deprecate action must be executed on every request.
+''Not supported in v3''' 
 
 == drop ==
 '''Description:''' Unlike in v2, in ModSecurity v3 this action currently functions the same as the deny action.
@@ -2418,7 +2405,9 @@ SecRule REQUEST_URI "^/cgi-bin/script\.pl" "phase:2,id:115,t:none,t:lowercase,t:
 You should use the expirevar actions at the same time that you use setvar actions in order to keep the intended expiration time. If they are used on their own (perhaps in a SecAction directive), the expire time will be reset.
 
 == id ==
-'''Description''': Assigns a unique ID to the rule or chain in which it appears. Starting with ModSecurity 2.7 this action is mandatory and must be numeric.
+'''Description''': Assigns a unique, numeric ID to the rule or chain in which it appears.
+
+This action is required for both SecRule directives and SecAction directives. It is not currently mandatory for SecRuleScript directives but it is strongly recommended.
 
 '''Action Group:''' Meta-data
 
@@ -2427,7 +2416,7 @@ You should use the expirevar actions at the same time that you use setvar action
 SecRule &REQUEST_HEADERS:Host "@eq 0" "log,id:60008,severity:2,msg:'Request Missing a Host Header'"
 </pre>
 
-; Note : The id action is required for all SecRule/SecAction directives as of v2.7.0
+; Note : The id is an identifier only; it does not determine the relative order in which rules are executed. I.e. a rule with id 5001 will not be executed before rule 5002 just because the former is numerically smaller.
 
 These are the reserved ranges:
 
@@ -2638,90 +2627,19 @@ SecRule REQUEST_FILENAME|ARGS_NAMES|ARGS|XML:/* "(?:(?:[\;\|\`]\W*?\bcc|\b(wget|
 ; Note : This action is used in combination with the id action to allow the same rule ID to be used after changes take place but to still provide some indication the rule changed.
 
 == sanitiseArg ==
-'''Description:''' Prevents sensitive request parameter data from being logged to audit log. Each byte of the named parameter(s) is replaced with an asterisk.
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
-
-'''Action Group:''' Non-disruptive
-
-'''Example:'''
-<pre>
-# Never log passwords 
-SecAction "nolog,phase:2,id:131,sanitiseArg:password,sanitiseArg:newPassword,sanitiseArg:oldPassword"
-</pre>
-
-; Note : The sanitize actions affect only the data as it is logged to audit log. High-level debug logs may contain sensitive data. Apache access log may contain sensitive data placed in the request URI.
+''Not supported in v3''' 
 
 == sanitiseMatched ==
-'''Description:''' Prevents the matched variable (request argument, request header, or response header) from being logged to audit log. Each byte of the named parameter(s) is replaced with an asterisk.
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
-
-'''Action Group:''' Non-disruptive
-
-'''Example:''' This action can be used to sanitise arbitrary transaction elements when they match a condition. For example, the example below will sanitise any argument that contains the word password in the name.
-<pre>
-SecRule ARGS_NAMES password nolog,pass,id:132,sanitiseMatched
-</pre>
-
-; Note : The sanitize actions affect only the data as it is logged to audit log. High-level debug logs may contain sensitive data. Apache access log may contain sensitive data placed in the request URI.
+''Not supported in v3''' 
 
 == sanitiseMatchedBytes ==
-'''Description:''' Prevents the matched string in a variable from being logged to audit log. Each or a range of bytes of the named parameter(s) is replaced with an asterisk.
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
-
-'''Action Group:''' Non-disruptive
-
-'''Example:''' This action can be used to sanitise arbitrary transaction elements when they match a condition. For example, the example below will sanitise the credit card number.
-*sanitiseMatchedBytes -- This would x out only the bytes that matched.
-*sanitiseMatchedBytes:1/4 -- This would x out the bytes that matched, but keep the first byte and last 4 bytes
-<pre>
-# Detect credit card numbers in parameters and 
-# prevent them from being logged to audit log 
-SecRule ARGS "@verifyCC \d{13,16}" "phase:2,id:133,nolog,capture,pass,msg:'Potential credit card number in request',sanitiseMatchedBytes"
-SecRule RESPONSE_BODY "@verifyCC \d{13,16}" "phase:4,id:134,t:none,log,capture,block,msg:'Potential credit card number is response body',sanitiseMatchedBytes:0/4"
-</pre>
-
-; Note : The sanitize actions affect only the data as it is logged to audit log. High-level debug logs may contain sensitive data. Apache access log may contain sensitive data placed in the request URI. You must use capture action with sanitiseMatchedBytes, so the operator must support capture action. ie: @rx, @verifyCC.
+''Not supported in v3''' 
 
 == sanitiseRequestHeader ==
-'''Description:''' Prevents a named request header from being logged to audit log. Each byte of the named request header is replaced with an asterisk..
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
-
-'''Action Group:''' Non-disruptive
-
-'''Example:''' This will sanitise the data in the Authorization header.
-<pre>
-SecAction "phase:1,nolog,pass,id:135,sanitiseRequestHeader:Authorization"
-</pre>
-
-; Note : The sanitize actions affect only the data as it is logged to audit log. High-level debug logs may contain sensitive data. Apache access log may contain sensitive data placed in the request URI.
+''Not supported in v3''' 
 
 == sanitiseResponseHeader ==
-'''Description:''' Prevents a named response header from being logged to audit log. Each byte of the named response header is replaced with an asterisk.
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
-
-'''Action Group:''' Non-disruptive
-
-'''Example:''' This will sanitise the Set-Cookie data sent to the client.
-<pre>
-SecAction "phase:3,nolog,pass,id:136,sanitiseResponseHeader:Set-Cookie"
-</pre>
-
-; Note : The sanitize actions affect only the data as it is logged to audit log. High-level debug logs may contain sensitive data. Apache access log may contain sensitive data placed in the request URI.
+''Not supported in v3''' 
 
 == severity ==
 '''Description:''' Assigns severity to the rule in which it is used.
@@ -2903,8 +2821,6 @@ The skipAfter action works only within the current processing phase and not nece
 SecDefaultAction "phase:1,log,deny,id:145,status:403"
 </pre>
 
-Status actions defined in Apache scope locations (such as Directory, Location, etc...) may be superseded by phase:1 action settings. The Apache ErrorDocument directive will be triggered if present in the configuration. Therefore if you have previously defined a custom error page for a given status then it will be executed and its output presented to the user.
-
 == t ==
 '''Description:''' This action is used to specify the transformation pipeline to use to transform the value of each variable used in the rule before matching.
 
@@ -2935,8 +2851,6 @@ The tag information appears along with other rule metadata. The purpose of the t
 '''Description:''' Specifies the rule set version.
 
 '''Action Group:''' Meta-data
-
-'''Version:''' 2.7
 
 '''Example:'''
 <pre>
@@ -3364,7 +3278,7 @@ Regular expressions are a very powerful tool. You are strongly advised to read t
 '''Example:'''
 <pre>
 # From a query argument 'aaa12bbb45ccc', both '12' and '45' will be returned as captures
-SecRule ARGS_GET "@rxGlobali [0-9]+" "phase:1,id:174,capture"
+SecRule ARGS_GET "@rxGlobal [0-9]+" "phase:1,id:174,capture"
 </pre>
 
 This operator is more expensive than @rx. Users are advised to use @rxGlobal only when the full captures are needed and prefer @rx in other cases.
