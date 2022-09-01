@@ -1,0 +1,403 @@
+= ModSecurity&reg; Reference Manual =
+== Current as of v2.6 v2.7 v2.8 v2.9 v3.0 ==
+=== Copyright &copy; 2004-2022 [https://www.trustwave.com/ Trustwave Holdings, Inc.] ===
+
+= Table of Contents =
+= Introduction =
+ModSecurity is a web application firewall (WAF). With over 70% of attacks now carried out over the web application level, organisations need all the help they can get in making their systems secure. WAFs are deployed to establish an increased external security layer to detect and/or prevent attacks before they reach web applications. ModSecurity provides protection from a range of attacks against web applications and allows for HTTP traffic monitoring and real-time analysis with little or no changes to existing infrastructure.
+
+== HTTP Traffic Logging ==
+Web servers are typically well-equipped to log traffic in a form useful for marketing analyses, but fall short logging traffic to web applications. In particular, most are not capable of logging the request bodies. Your adversaries know this, and that is why most attacks are now carried out via POST requests, rendering your systems blind. ModSecurity makes full HTTP transaction logging possible, allowing complete requests and responses to be logged. Its logging facilities also allow fine-grained decisions to be made about exactly what is logged and when, ensuring only the relevant data is recorded. As some of the request and/or response may contain sensitive data in certain fields, ModSecurity can be configured to mask these fields before they are written to the audit log.
+
+== Real-Time Monitoring and Attack Detection ==
+In addition to providing logging facilities, ModSecurity can monitor the HTTP traffic in real time in order to detect attacks. In this case, ModSecurity operates as a web intrusion detection tool, allowing you to react to suspicious events that take place at your web systems.
+
+== Attack Prevention and Virtual Patching == 
+ModSecurity can also act immediately to prevent attacks from reaching your web applications. There are three commonly used approaches:
+#Negative security model. A negative security model monitors requests for anomalies, unusual behaviour, and common web application attacks. It keeps anomaly scores for each request, IP addresses, application sessions, and user accounts. Requests with high anomaly scores are either logged or rejected altogether.
+#Positive security model. When a positive security model is deployed, only requests that are known to be valid are accepted, with everything else rejected. This model requires knowledge of the web applications you are protecting. Therefore a positive security model works best with applications that are heavily used but rarely updated so that maintenance of the model is minimized.
+#Known weaknesses and vulnerabilities. Its rule language makes ModSecurity an ideal external patching tool. External patching (sometimes referred to as Virtual Patching) is about reducing the window of opportunity. Time needed to patch application vulnerabilities often runs to weeks in many organisations. With ModSecurity, applications can be patched from the outside, without touching the application source code (and even without any access to it), making your systems secure until a proper patch is applied to the application.
+
+== Flexible Rule Engine == 
+A flexible rule engine sits in the heart of ModSecurity. It implements the ModSecurity Rule Language, which is a specialised programming language designed to work with HTTP transaction data. The ModSecurity Rule Language is designed to be easy to use, yet flexible: common operations are simple while complex operations are possible. Certified ModSecurity Rules, included with ModSecurity, contain a comprehensive set of rules that implement general-purpose hardening, protocol validation and detection of common web application security issues. Heavily commented, these rules can be used as a learning tool.
+
+== Embedded-mode Deployment == 
+ModSecurity is an embeddable web application firewall, which means it can be deployed as part of your existing web server infrastructure provided your web servers are either Apache, IIS7 or Nginx. This deployment method has certain advantages:
+
+#No changes to existing network. It only takes a few minutes to add ModSecurity to your existing web servers. And because it was designed to be completely passive by default, you are free to deploy it incrementally and only use the features you need. It is equally easy to remove or deactivate it if required.
+#No single point of failure. Unlike with network-based deployments, you will not be introducing a new point of failure to your system.
+#Implicit load balancing and scaling. Because it works embedded in web servers, ModSecurity will automatically take advantage of the additional load balancing and scalability features. You will not need to think of load balancing and scaling unless your existing system needs them.
+#Minimal overhead. Because it works from inside the web server process there is no overhead for network communication and minimal overhead in parsing and data exchange.
+#No problem with encrypted or compressed content. Many IDS systems have difficulties analysing SSL traffic. This is not a problem for ModSecurity because it is positioned to work when the traffic is decrypted and decompressed.
+
+== Network-based Deployment == 
+ModSecurity works equally well when deployed as part of a reverse proxy server, and many of our customers choose to do so. In this scenario, one installation of ModSecurity can protect any number of back-end web servers.
+
+== Portability == 
+ModSecurity is known to work well on a wide range of operating systems. Our customers are successfully running it on Linux, Windows, Solaris, FreeBSD, OpenBSD, NetBSD, AIX, Mac OS X, and HP-UX.
+
+== Licensing ==
+ModSecurity is available under the Apache Software License v2 [http://www.apache.org/licenses/LICENSE-2.0.txt]
+
+; Note : ModSecurity, mod_security, ModSecurity Pro, and ModSecurity Core Rules are trademarks or registered trademarks of Trustwave Holdings, Inc.
+
+= Installation for Apache =
+== Prerequisites ==
+
+=== ModSecurity 2.x works only with Apache 2.0.x or higher ===
+The ModSecurity team works hard to ensure that ModSecurity version 2.x will work with all versions of Apache 2.x and higher. If you find incompatibilities on any version (2.2.x, 2.4.x, or 2.6.x) please immediately inform the ModSecurity team
+
+=== mod_uniqueid ===
+Make sure you have <code>mod_unique_id</code> installed.
+mod_unique_id is packaged with Apache httpd.
+
+=== libapr and libapr-util ===
+libapr and libapr-util - http://apr.apache.org/
+
+=== libpcre ===
+http://www.pcre.org/
+
+=== libxml2 ===
+http://xmlsoft.org/downloads.html
+
+=== liblua v5.x.x ===
+This library is optional and only needed if you will be using the new Lua engine - http://www.lua.org/download.html
+
+; Note : that ModSecurity requires the dynamic libraries. These are not built by default in the source distribution, so the binary distribution is recommended.
+
+; Note : libModSecurity (aka v3) is compatible with Lua 5.2+.
+
+=== libcurl v7.15.1 or higher ===
+
+If you will be using the ModSecurity Log Collector (mlogc) to send audit logs to a central repository, then you will also need the curl library.
+
+http://curl.haxx.se/libcurl/
+
+; Note : Many have had issues with libcurl linked with the GnuTLS library for SSL/TLS support. It is recommended that the openssl library be used for SSL/TLS support in libcurl.
+
+== Installation Methods ==
+Before you begin with installation you will need to choose your preferred installation method. First you need to choose whether to install the latest version of ModSecurity directly from git (best features, but possibly unstable) or use the latest stable release (recommended). If you choose a stable release, it might be possible to install ModSecurity from binary. It is always possible to compile it from source code.
+
+The following few pages will give you more information on benefits of choosing one method over another.
+
+== GitHub Access ==
+
+If you want to access the latest version of the module you need to get it from the git repository. The list of changes made since the last stable release is normally available on the web site (and in the file CHANGES). The git repository for ModSecurity is hosted by GitHub (http://www.github.com). You can access it directly or view if through web using this address: https://github.com/SpiderLabs/ModSecurity
+
+To download the lastest TRUNK source code to your computer you need to execute the following command:
+
+'''git'''
+<pre>
+$git clone git://github.com/SpiderLabs/ModSecurity.git
+$git checkout remotes/trunk
+</pre>
+
+
+For v2.6.0 and above, the installation process has changed.  Follow these steps:
+#cd into the directory - <code>$cd ModSecurity</code>
+#Run autogen.sh script - <code>$./autogen.sh</code>
+#Run configure script - <code>$./configure</code>
+#Run make - <code>$make</code>
+#Run make install - <code>$make install</code>
+#Copy the new mod_security2.so file into the proper Apache modules directory - <code>$cp /usr/local/modsecurity/lib/mod_security2.so /usr/local/apache/modules/</code>
+
+== Stable Release Download ==
+To download the stable release go to http://www.modsecurity.org/download/. Binary distributions are sometimes available. If they are, they are listed on the download page. If not download the source code distribution.
+
+== Installation Steps ==
+
+*Stop Apache httpd
+*Unpack the ModSecurity archive
+*Build
+Building differs for UNIX (or UNIX-like) operating systems and Windows.
+=== UNIX ===
+Run the configure script to generate a Makefile. Typically no options are needed.
+<pre>./configure</pre>
+Options are available for more customization (use ./configure --help for a full list), but typically you will only need to specify the location of the apxs command installed by Apache httpd with the --with-apxs option.
+<pre>./configure --with-apxs=/path/to/httpd-2.x.y/bin/apxs</pre>
+; Note : There are certain configure options that are meant for debugging an other development use. If enabled, these options can substantially impact performance. These options include all --debug-* options as well as the --enable-performance-measurements options.
+Compile with:
+<pre>make</pre>
+Optionally test with: 
+<pre>make CFLAGS=-DMSC_TEST test</pre>
+; Note : This is step is still a bit experimental. If you have problems, please send the full output and error from the build to the support list. Most common issues are related to not finding the required headers and/or libraries.
+Optionally build the ModSecurity Log Collector with: 
+<pre>make mlogc</pre>
+Optionally install mlogc: Review the INSTALL file included in the apache2/mlogc-src directory in the distribution.
+Install the ModSecurity module with:
+<pre>make install</pre>
+
+=== Windows (MS VC++ 8) ===
+Edit Makefile.win to configure the Apache base and library paths.
+Compile with: <code>nmake -f Makefile.win</code>
+Install the ModSecurity module with: <code>nmake -f Makefile.win install</code>
+Copy the libxml2.dll and lua5.1.dll to the Apache bin directory. Alternatively you can follow the step below for using LoadFile to load these libraries.
+; Note : Users should follow the steps present in README_WINDOWS.txt into ModSecurity tarball.
+
+=== Edit the main Apache httpd config file (usually httpd.conf) ===
+On UNIX (and Windows if you did not copy the DLLs as stated above) you must load libxml2 and lua5.1 before ModSecurity with something like this:
+<pre>
+LoadFile /usr/lib/libxml2.so
+LoadFile /usr/lib/liblua5.1.so
+</pre>
+Load the ModSecurity module with:
+<pre>
+LoadModule security2_module modules/mod_security2.so
+</pre>
+=== Configure ModSecurity ===
+=== Start Apache httpd ===
+You should now have ModSecurity 2.x up and running.
+
+; Note : If you have compiled Apache yourself you might experience problems compiling ModSecurity against PCRE. This is because Apache bundles PCRE but this library is also typically provided by the operating system. I would expect most (all) vendor-packaged Apache distributions to be configured to use an external PCRE library (so this should not be a problem).
+
+: You want to avoid Apache using the bundled PCRE library and ModSecurity linking against the one provided by the operating system. The easiest way to do this is to compile Apache against the PCRE library provided by the operating system (or you can compile it against the latest PCRE version you downloaded from the main PCRE distribution site). You can do this at configure time using the --with-pcre switch. If you are not in a position to recompile Apache, then, to compile ModSecurity successfully, you'd still need to have access to the bundled PCRE headers (they are available only in the Apache source code) and change the include path for ModSecurity (as you did in step 7 above) to point to them (via the --with-pcre ModSecurity configure option).
+
+: Do note that if your Apache is using an external PCRE library you can compile ModSecurity with WITH_PCRE_STUDY defined,which would possibly give you a slight performance edge in regular expression processing.
+
+: Non-gcc compilers may have problems running out-of-the-box as the current build system was designed around the gcc compiler and some compiler/linker flags may differ. To use a non-gcc compiler you may need some manual Makefile tweaks if issues cannot be solved by exporting custom CFLAGS and CPPFLAGS environment variables.
+
+: If you are upgrading from ModSecurity 1.x, please refer to the migration matrix at http://www.modsecurity.org/documentation/ModSecurity-Migration-Matrix.pdf
+
+: Starting with ModSecurity 2.7.0 there are a few important configuration options
+#'''--enable-pcre-jit''' - Enables JIT support from pcre >= 8.20 that can improve regex performance.
+#'''--enable-lua-cache''' - Enables lua vm caching that can improve lua script performance. Difference just appears if ModSecurity must run more than one script per transaction.
+#'''--enable-request-early''' - On ModSecurity 2.6 phase one has been moved to phase 2 hook, if you want to play around it use this option.
+#'''--enable-htaccess-config''' - It will allow the follow directives to be used into .htaccess files when AllowOverride Options is set :
+<pre>
+        - SecAction
+        - SecRule
+
+        - SecRuleRemoveByMsg
+        - SecRuleRemoveByTag
+        - SecRuleRemoveById
+
+        - SecRuleUpdateActionById
+        - SecRuleUpdateTargetById
+        - SecRuleUpdateTargetByTag
+        - SecRuleUpdateTargetByMsg
+</pre>
+
+= Installation for NGINX =
+The extensibility model of the nginx server does not include dynamically loaded modules, thus ModSecurity must be compiled with the source code of the main server.  Since nginx is available on multiple Unix-based platforms (and also on Windows), for now the recommended way of obtaining ModSecurity for nginx is compilation in the designated environment.
+== Manually Installing ModSecurity Module on NGINX ==
+The first step in obtaining nginx server with built-in ModSecurity module is building of standalone library containing full ModSecurity with a set of intermediate APIs (this layer is a common base for IIS version, nginx version, and server-less command line version of ModSecurity). First prepare the build environment for ModSecurity and then follow the installation steps below.
+The standalone ModSecurity is located at https://www.modsecurity.org/download.html.
+=== Preinstallation Steps ===
+To build the standalone module from source on a GNU/Linux platform, you need to install the standard and development packages for apache and prce. For example:
+<pre>
+# RHEL/CentOS style install. You may also need systemd-devel on newer versions
+
+sudo yum install httpd httpd-devel pcre pcre-devel libxml2-devel 
+</pre>
+<pre>
+# Debian style install
+apt-get install apache2-threaded-dev libxml2-dev
+</pre>
+For details on why compiling ModSecurity for nginx requires these packages, see [https://github.com/SpiderLabs/ModSecurity/issues/603  issue 603].
+=== Installation Steps ===
+1. - Compile standalone module:
+<pre>
+~/mod_security$ ./configure --enable-standalone-module --disable-mlogc
+~/mod_security$ make
+</pre>
+Note that the path and name of the mod_security folder will differ based on what version and where you download the tarball from [https://www.modsecurity.org/download.html modsecurity.org]. 
+
+2. - Once the standalone library is built successfully, one can follow with building the nginx server, following the steps from the nginx build tutorial:
+<pre>
+~/nginx-1.2.0$ ./configure --add-module=../mod_security/nginx/modsecurity
+~/nginx-1.2.0$ make
+~/nginx-1.2.0$ sudo make install
+</pre>
+The last command performs server installation on the local machine, which can be either customized or omitted with built binaries packaged or moved to alternative server.
+=== Configuration Steps ===
+3. The ModSecurity configuration file must be linked in nginx.conf file using the following directives defined by Nginx’s ModSecurity extension module. This configures ModSecurity as an Nginx request handler(The current request flow is:
+request -> modsecurity handler -> backend). The configuration file will look similar to the following:
+<pre>
+location / {
+           ModSecurityEnabled on;
+           ModSecurityConfig modsecurity.conf;
+           # Only needed if including proxies
+           proxy_pass http://localhost:8011;
+           proxy_read_timeout 180s;
+       }
+</pre>
+A recommended sample of modSecurity.conf file can be found in the ModSecurity git repository (https://raw.githubusercontent.com/SpiderLabs/ModSecurity/master/modsecurity.conf-recommended). Note that this file makes a reference to a unicode.mapping file, which is also found in the same repository (https://raw.githubusercontent.com/SpiderLabs/ModSecurity/master/unicode.mapping). 
+
+4. Adding other configuration files (Optional):
+Because Nginx only supports one 'ModSecurityConfig' directive if you want to use a multiple configuration files (for instance OWASP CRS), you simply need to use the 'Include' directive from within the file specified in your 'ModSecurityConfig'. This directive is provided by APR and is not documented in this guide but is simple enough to use. Adding the following at the bottom of modsecurity.conf will include a file from the same directory called test.conf:
+<pre>
+Include test.conf
+</pre>
+The include directive also supports wildcard characters (*) and full paths. It should be easy to add something like the following (assuming CRS has been downloaded and installed to this path):
+<pre>
+Include /opt/owasp-modsecurity-crs/modsecurity_crs_10_setup.conf
+Include /opt/owasp-modsecurity-crs/rules/*.conf
+</pre>
+
+'''Note''': Prior to version 2.7.2 Nginx used the ModSecurityPass directive to control proxying connections, this has been removed in favor of the aforementioned version. If you are running ModSecurity 2.7.1 or before your configuration should appear similar to the following: 
+<pre>
+location / {
+           ModSecurityEnabled on;
+           ModSecurityConfig modsecurity.conf;
+           ModSecurityPass @backend;
+       }
+
+location @backend {
+           proxy_pass http://localhost:8011;
+           proxy_read_timeout 180s;
+       }
+</pre>
+When deploying via this method you will need to modify the @backend definition to point to your correct back-end web application that Nginx is proxying to. Again, Starting with ModSecurity 2.7.2 the ModSecurityPass option was removed.
+
+= Installation for Microsoft IIS =
+Before installing ModSecurity make sure you have Visual Studio 2013 Runtime (vcredist) installed.
+Vcredist can be downloaded here: http://www.visualstudio.com/downloads/download-visual-studio-vs
+(note that, there are two different versions 32 and 64b).
+
+The source code of ModSecurity’s IIS components is fully published and the binary building process is described (see README_WINDOWS.TXT). For quick installation it is highly recommended to use standard MSI installer available from SourceForge files repository of ModSecurity project or use binary package and follow the manual installation steps.
+
+Any installation errors or warning messages are logged in the application event log under 'ModSecurityIIS Installer' source.
+
+The OWASP CRS is also installed on the system drive, on the selected folder.
+It can be included in any website by adding the following line to the web.config file, in system.webServer section:
+        <ModSecurity enabled="true" configFile="c:\path\to\owasp_crs\modsecurity_iis.conf" />
+(relative path can also be used accordingly)
+== Manually Installing and Troubleshooting Setup of ModSecurity Module on IIS ==
+
+=== Configuration ===
+: After the installation the module will be running in all websites by default. To remove it from a website add to web.config:
+<pre><modules>
+    <remove name="ModSecurityIIS" />
+</modules></pre>
+: To configure module in a website add to web.config:
+<pre><?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <system.webServer>
+        <ModSecurity enabled="true" configFile="c:\inetpub\wwwroot\xss.conf" />
+    </system.webServer>
+</configuration></pre>
+: where configFile is standard ModSecurity config file.
+<br>
+: Events from the module will show up in "Application" Windows log.
+
+== Common Problems ==
+
+: If after installation protected website responds with HTTP 503 error and event ID 2280 keeps getting logged in the application event log:
+
+<pre>
+Log Name:      Application
+Source:        Microsoft-Windows-IIS-W3SVC-WP
+Event ID:      2280
+Task Category: None
+Level:         Error
+Keywords:      Classic
+User:          N/A
+Description:
+The Module DLL C:\Windows\system32\inetsrv\modsecurityiis.dll failed to load.  The data is the error.
+</pre>
+
+most likely it means that the installation process has failed and the ModSecurityIIS.dll module is missing one or more libraries that it depends on. Repeating installation of the prerequisites and the module files should fix the problem. The dependency walker tool:
+
+* http://www.dependencywalker.com/
+
+can be used to figure out which library is missing or cannot be loaded.
+
+= Configuration Directives =
+Configuration Directives are described in a separate document:
+* [[Configuration Directives|https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual-%28v2.x%29-Configuration-Directives]]
+
+= Processing Phases =
+Processing Phases are described in a separate document:
+* [[Processing Phases|https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual-%28v2.x%29-Processing-Phases]]
+
+= Variables =
+Variables are described in a separate document:
+* [[Variables|https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual-%28v2.x%29-Variables]]
+
+= Transformation Functions =
+Transformation functions are described in a separate document:
+* [[Transformation Functions|https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual-%28v2.x%29-Transformation-Functions]]
+
+= Actions =
+Actions are described in a separate document:
+* [[Actions|https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual-%28v2.x%29-Actions]]
+
+= Operators =
+Operators are described in a separate document:
+* [[Operators|https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual-%28v2.x%29-Operators]]
+
+= Macro Expansion =
+Macros allow for using place holders in rules that will be expanded out to their values at runtime. Currently only variable expansion is supported, however more options may be added in future versions of ModSecurity.
+
+Format:
+<pre>
+%{VARIABLE}
+%{COLLECTION.VARIABLE}
+</pre>
+Macro expansion can be used in actions such as initcol, setsid, setuid, setvar, setenv, logdata. Operators that are evaluated at runtime support expansion and are noted above. Such operators include @beginsWith, @endsWith, @contains, @within and @streq. You can use macro expansion for operators that are "compiled" such @rx, etc. however you will have some impact in efficiency.
+
+Some values you may want to expand include: TX, REMOTE_ADDR, USERID, HIGHEST_SEVERITY, MATCHED_VAR, MATCHED_VAR_NAME, MULTIPART_STRICT_ERROR, RULE, SESSION, USERID, among others.
+
+= Persistent Storage =
+At this time it is only possible to have five collections in which data is stored persistently (i.e. data available to multiple requests). These are: GLOBAL, RESOURCE, IP, SESSION and USER.
+
+Every collection contains several built-in variables that are available and are read-only unless otherwise specified:
+#'''CREATE_TIME''' - date/time of the creation of the collection.
+#'''IS_NEW''' - set to 1 if the collection is new (not yet persisted) otherwise set to 0.
+#'''KEY''' - the value of the initcol variable (the client's IP address in the example).
+#'''LAST_UPDATE_TIME''' - date/time of the last update to the collection.
+#'''TIMEOUT''' - date/time in seconds when the collection will be updated on disk from memory (if no other updates occur). This variable may be set if you wish to specifiy an explicit expiration time (default is 3600 seconds). The TIMEOUT is updated every time that the values of an entry is changed.
+#'''UPDATE_COUNTER''' - how many times the collection has been updated since creation.
+#'''UPDATE_RATE''' - is the average rate updates per minute since creation.
+
+To create a collection to hold session variables (SESSION) use action setsid. To create a collection to hold user variables (USER) use action setuid. To create a collection to hold client address variables (IP), global data or resource-specific data, use action initcol.
+
+; Note : Persistent collections can only be initialized once per transaction.
+
+; Note : ModSecurity implements atomic updates of persistent variables only for integer variables (counters) at this time. Variables are read from storage whenever initcol is encountered in the rules and persisted at the end of request processing. Counters are adjusted by applying a delta generated by re-reading the persisted data just before being persisted. This keeps counter data consistent even if the counter was modified and persisted by another thread/process during the transaction.
+
+; Note : ModSecurity uses a Berkley Database (SDBM) for persistent storage. This type of database is generally limited to storing a maximum of 1008 bytes per key. This may be a limitation if you are attempting to store a considerable amount of data in variables for a single key. Some of this limitation is planned to be reduced in a future version of ModSecurity.
+
+= Miscellaneous Topics =
+
+== Logging in Apache via mod_log_config ==
+
+The ModSecurity variables are accessible from Apache's mod_log_config (-> Apache Access Log). The entries take the form %{VARIABLE}M. Apache writes these logs at the very end of a transaction after the record in the ModSecurity audit log has been written. It is thus possible to log variables, that are only defined after the writing of the audit Log.
+
+Examples Apache mod_log_config:
+<pre>
+LogFormat "%t %{UNIQUE_ID}e %{MULTIPART_STRICT_ERROR}M %{TX.ANOMALY_SCORE}M" custom-format
+</pre>
+
+== Precedence of ModSecurity over other Apache modules ==
+
+ModSecurity rules run in one of five phases. The first two phases are executed as the request is being read, the third and the fourth phase are executed after the response has been generated and the fifth phase when the response has been sent and the logfile has been written.
+
+The various phases are hooked into the Apache request lifecycle together with the other Apache modules. On each hook, there can be more than one module being executed. This is where precedence comes into play.
+
+Precedence is assigned at compile time and mostly hard-coded into the ModSecurity source code. The compilation directive --enable-request-early can used to move the processing of the ModSecurity phase 1 to a different hook (see above).
+
+When examining the response, ModSecurity tries to be as early as possible. For example, the phase 3 and phase 4 will run before mod_headers with its _Header_ directive. However, when calling _Header_ with the keyword _early_, the precedence is raised and the directive is executed before ModSecurity phase 3.
+So if you want to edit HTTP response headers with mod_headers (adding the secure-flag to cookies springs to mind), you will usually have to wait until ModSecurity phase 5, before you can examine the effect of the header manipulation with ModSecurity.
+
+Also see Processing Phases (above).
+
+= A Recommended Base Configuration =
+
+The recommended configuration file which handles the main ModSecurity directives/settings is available at source code archive, labeled as ''modsecurity.conf-recommended''. It is also available at [https://raw.github.com/SpiderLabs/ModSecurity/master/modsecurity.conf-recommended our git repository]. These items listed on this recommended configuration are the items that the Admin should handle and configure for their own site. These settings should not be including within 3rd party rules files.
+
+== Impedance Mismatch ==
+Web application firewalls have a difficult job trying to make sense of data that passes by, without any knowledge of the application and its business logic. The protection they provide comes from having an independent layer of security on the outside. Because data validation is done twice, security can be increased without having to touch the application. In some cases, however, the fact that everything is done twice brings problems. Problems can arise in the areas where the communication protocols are not well specified, or where either the device or the application do things that are not in the specification. In such cases it may be possible to design payload that will be interpreted in one way by one device and in another by the other device. This problem is better known as Impedance Mismatch. It can be exploited to evade the security devices.
+
+While we will continue to enhance ModSecurity to deal with various evasion techniques the problem can only be minimized, but never solved. With so many different application backend chances are some will always do something completely unexpected. The only solution is to be aware of the technologies in the backend when writing rules, adapting the rules to remove the mismatch. See the next section for some examples.
+=== Impedance Mismatch with PHP Apps ===
+#When writing rules to protect PHP applications you need to pay attention to the following facts:
+#When "register_globals" is set to "On" request parameters are automatically converted to script variables. In some PHP versions it is even possible to override the $GLOBALS array.
+#Whitespace at the beginning of parameter names is ignored. (This is very dangerous if you are writing rules to target specific named variables.)
+#The remaining whitespace (in parameter names) is converted to underscores. The same applies to dots and to a "[" if the variable name does not contain a matching closing bracket. (Meaning that if you want to exploit a script through a variable that contains an underscore in the name you can send a parameter with a whitespace or a dot instead.)
+#Cookies can be treated as request parameters.
+#The discussion about variable names applies equally to the cookie names.
+#The order in which parameters are taken from the request and the environment is EGPCS (environment, GET, POST, Cookies, built-in variables). This means that a POST parameter will overwrite the parameters transported on the request line (in QUERY_STRING).
+#When "magic_quotes_gpc" is set to "On" PHP will use backslash to escape the following characters: single quote, double quote, backslash, and the nul byte.
+#If "magic_quotes_sybase" is set to "On" only the single quote will be escaped using another single quote. In this case the "magic_quotes_gpc" setting becomes irrelevant. The "magic_quotes_sybase" setting completely overrides the "magic_quotes_gpc" behaviour but "magic_quotes_gpc" still must be set to "On" for the Sybase-specific quoting to be work.
+#PHP will also automatically create nested arrays for you. For example "p[x][y]=1" results in a total of three variables.
