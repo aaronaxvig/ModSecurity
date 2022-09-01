@@ -11,7 +11,7 @@
    - [[Reference Manual v3.x | Reference-Manual-(v3.x)]]
 
 * ModSecurity version 2
-   - [[Reference Manual v2.x | Reference-Manual-(v2.x)]]
+   - [[Reference Manual v2.x | Reference-Manual-(v2.x)]] (Some people experience difficulty with the rendering for this version of the document)
    - [[Reference Manual v2.x (Split) | Reference-Manual-(v2.x) (Split)]]
    - [[Windows Troubleshooting | IIS-Troubleshooting]]
 
