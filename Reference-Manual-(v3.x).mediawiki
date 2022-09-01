@@ -321,9 +321,9 @@ Available audit log parts:
 *F: Final response headers (excluding the Date and Server headers, which are always added by Apache in the late stage of content delivery).
 *G: Reserved for the actual response body; not implemented yet.
 *H: Audit log trailer.
-*I: This part is a replacement for part C. It will log the same data as C in all cases except when multipart/form-data encoding in used. In this case, it will log a fake application/x-www-form-urlencoded body that contains the information about parameters but not about the files. This is handy if you don’t want to have (often large) files stored in your audit logs.
+*I: This part has not been implemented in ModSecurity v3.
 *J: This part contains information about the files uploaded using multipart/form-data encoding.
-*K: This part contains a full list of every rule that matched (one per line) in the order they were matched. The rules are fully qualified and will thus show inherited actions and default operators. Supported as of v2.5.0.
+*K: This part has not been implemented in ModSecurity v3.
 *Z: Final boundary, signifies the end of the entry (mandatory).
 
 == SecAuditLogRelevantStatus ==
@@ -2097,8 +2097,8 @@ SecRule REMOTE_ADDR "^192\.168\.1\.100$" phase:1,id:95,nolog,allow
 </pre>
 
 
-Prior to ModSecurity 2.5 the allow action would only affect the current phase. An allow in phase 1 would skip processing the remaining rules in phase 1 but the rules from phase 2 would execute. Starting with v2.5.0 allow was enhanced to allow for fine-grained control of what is done. The following rules now apply:
-#If used one its own, like in the example above, allow will affect the entire transaction, stopping processing of the current phase but also skipping over all other phases apart from the logging phase. (The logging phase is special; it is designed to always execute.)
+The action supports some finer-grained control of what is done. The following options are available:
+#If used on its own, like in the example above, allow will affect the entire transaction, stopping processing of the current phase but also skipping over all other phases apart from the logging phase. (The logging phase is special; it is designed to always execute.)
 #If used with parameter "phase", allow will cause the engine to stop processing the current phase. Other phases will continue as normal.
 #If used with parameter "request", allow will cause the engine to stop processing the current phase. The next phase to be processed will be phase RESPONSE_HEADERS.
 
@@ -2224,29 +2224,26 @@ SecRule REQUEST_URI "@beginsWith /index.php" "phase:1,t:none,pass, \
 The following configuration options are supported: 
 #'''auditEngine'''
 #'''auditLogParts''' 
-#'''debugLogLevel''' (Supported on libModSecurity: TBI)
-#'''forceRequestBodyVariable'''
+#'''debugLogLevel''' - Not supported in ModSecurity v3
+#'''forceRequestBodyVariable''' - Not implemented in ModSecurity v3 (REQUEST_BODY is always populated in v3)
 #'''requestBodyAccess''' 
-#'''requestBodyLimit''' (Supported on libModSecurity: TBI)
+#'''requestBodyLimit''' - Not supported in ModSecurity v3
 #'''requestBodyProcessor''' 
-#'''responseBodyAccess''' (Supported on libModSecurity: TBI)
-#'''responseBodyLimit''' (Supported on libModSecurity: TBI)
+#'''responseBodyAccess''' - Not supported in ModSecurity v3
+#'''responseBodyLimit''' - Not supported in ModSecurity v3
 #'''ruleEngine'''
 #'''ruleRemoveById''' - since this action us triggered at run time, it should be specified '''before''' the rule in which it is disabling.
-#'''ruleRemoveByMsg''' (Supported on libModSecurity: TBI)
-#'''ruleRemoveByTag''' (Supported on libModSecurity: TBI)
+#'''ruleRemoveByMsg''' - Not supported in ModSecurity v3
+#'''ruleRemoveByTag'''
 #'''ruleRemoveTargetById''' - since this action is used to just remove targets, users don't need to use the char ! before the target list. 
-#'''ruleRemoveTargetByMsg''' - since this action is used to just remove targets, users don't need to use the char ! before the target list. (Supported on libModSecurity: TBI)
+#'''ruleRemoveTargetByMsg''' - Not supported in ModSecurity v3
 #'''ruleRemoveTargetByTag''' - since this action is used to just remove targets, users don't need to use the char ! before the target list.
 
-With the exception of the requestBodyProcessor and forceRequestBodyVariable settings, each configuration option corresponds to one configuration directive and the usage is identical.
+With the exception of the requestBodyProcessor, each configuration option corresponds to one configuration directive and the usage is identical.
 
 The requestBodyProcessor option allows you to configure the request body processor. By default, ModSecurity will use the URLENCODED and MULTIPART processors to process an application/x-www-form-urlencoded and a multipart/form-data body, respectively. Other two processors are also supported: JSON and XML, but they are never used implicitly. Instead, you must tell ModSecurity to use it by placing a few rules in the REQUEST_HEADERS processing phase. After the request body is processed as XML, you will be able to use the XML-related features to inspect it.
 
 Request body processors will not interrupt a transaction if an error occurs during parsing. Instead, they will set the variables REQBODY_PROCESSOR_ERROR and REQBODY_PROCESSOR_ERROR_MSG. These variables should be inspected in the REQUEST_BODY phase and an appropriate action taken.
-The forceRequestBodyVariable option allows you to configure the REQUEST_BODY variable to be set when there is no request body processor configured. This allows for inspection of request bodies of unknown types.
-
-; Note : There was a ctl:ruleUpdateTargetById introduced in 2.6.0 and removed from the code in 2.7.0. JSON was added as part of v2.8.0-rc1
 
 == deny ==
 '''Description:''' Stops rule processing and intercepts transaction.
@@ -2467,7 +2464,7 @@ SecRule ARGS "test" "phase:2,log,pass,setvar:TX.test=+1,id:124"
 SecAction phase:1,nolog,pass,id:126,initcol:IP=%{REMOTE_ADDR}
 </pre>
 
-Starting in ModSecurity version v2.7 there are aliases for some phase numbers:
+There are aliases for three of the five phase numbers:
 *'''2 - request'''
 *'''4 - response'''
 *'''5 - logging'''
