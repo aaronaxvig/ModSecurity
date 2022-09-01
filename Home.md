@@ -12,15 +12,7 @@
 
 * ModSecurity version 2
    - [[Reference Manual v2.x | Reference-Manual-(v2.x)]]
-   - [[Introduction | Reference-Manual-(v2.x)#Introduction]]
-   - [[Installation Apache | Reference-Manual-(v2.x)#Installation_for_Apache]]
-   - [[Configuration Apache | Reference-Manual-(v2.x)#configure-modsecurity]]
-   - [[Installation Nginx | Reference-Manual-(v2.x)#installation-for-nginx]]
-   - [[Configuration Nginx | Reference-Manual-(v2.x)#configuration-steps]]
-   - [[Installation IIS | Reference-Manual-(v2.x)#installation-for-microsoft-iis]]
-   - [[Configuration Reference | Reference-Manual-(v2.x)#configuration-directives]]
-   - [[Recommended Base Configuration | Reference-Manual-(v2.x)#a-recommended-base-configuration]]
-   - [[Rule Sets (OWASP Core) | Reference-Manual-(v2.x)#OWASP_ModSecurity_Core_Rule_Set_CRS_Project]]
+   - [[Reference Manual v2.x (Split) | Reference-Manual-(v2.x) (Split)]]
    - [[Windows Troubleshooting | IIS-Troubleshooting]]
 
 
