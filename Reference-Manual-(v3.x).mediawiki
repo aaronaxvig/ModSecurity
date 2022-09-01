@@ -21,7 +21,7 @@ ModSecurity can also act immediately to prevent attacks from reaching your web a
 #Known weaknesses and vulnerabilities. Its rule language makes ModSecurity an ideal external patching tool. External patching (sometimes referred to as Virtual Patching) is about reducing the window of opportunity. Time needed to patch application vulnerabilities often runs to weeks in many organisations. With ModSecurity, applications can be patched from the outside, without touching the application source code (and even without any access to it), making your systems secure until a proper patch is applied to the application.
 
 == Flexible Rule Engine == 
-A flexible rule engine sits in the heart of ModSecurity. It implements the ModSecurity Rule Language, which is a specialised programming language designed to work with HTTP transaction data. The ModSecurity Rule Language is designed to be easy to use, yet flexible: common operations are simple while complex operations are possible. Certified ModSecurity Rules, included with ModSecurity, contain a comprehensive set of rules that implement general-purpose hardening, protocol validation and detection of common web application security issues. Heavily commented, these rules can be used as a learning tool.
+A flexible rule engine sits in the heart of ModSecurity. It implements the ModSecurity Rule Language, which is a specialised programming language designed to work with HTTP transaction data. The ModSecurity Rule Language is designed to be easy to use, yet flexible: common operations are simple while complex operations are possible.
 
 == Embedded-mode Deployment == 
 ModSecurity is an embeddable web application firewall, which means it can be deployed as part of your existing web server infrastructure provided your web servers are either Apache, IIS7 or Nginx. This deployment method has certain advantages:
@@ -256,8 +256,6 @@ If using <code>SecAuditLogType HTTPS</code> specify the destination url. E.g. <c
 
 '''Scope:''' Any 
 
-'''Version:''' 2.1.2
-
 The purpose of SecAuditLog2 is to make logging to two remote servers possible, which is typically achieved by running two instances of the mlogc tool, each with a different configuration (in addition, one of the instances will need to be instructed not to delete the files it submits). This directive can be used only if SecAuditLog was previously configured and only if concurrent logging format is used.
 
 == SecAuditLogDirMode==
@@ -268,8 +266,6 @@ The purpose of SecAuditLog2 is to make logging to two remote servers possible, w
 '''Default:''' 0600 
 
 '''Scope:''' Any 
-
-'''Version:''' 2.5.10
 
 The default mode for new audit log directories (0600) only grants read/write access to the owner (typically the account under which Apache is running, for example apache). If access from other accounts is needed (e.g., for use with mpm-itk), then you may use this directive to grant additional read and/or write privileges. You should use this directive with caution to avoid exposing potentially sensitive data to unauthorized users. Using the value default as parameter reverts the configuration back to the default setting. This feature is not available on operating systems not supporting octal file modes.
 
@@ -296,8 +292,6 @@ Example:
 '''Default:''' 0600
 
 '''Scope:''' Any 
-
-'''Version:''' 2.5.10
 
 '''Example Usage:''' <code>SecAuditLogFileMode 00640</code> 
 
@@ -356,8 +350,6 @@ The main purpose of this directive is to allow you to configure audit logging fo
 
 '''Scope:''' Any
 
-'''Version:''' 2.0.0
-
 This directive is only needed when concurrent audit logging is used. The directory must already exist and must be writable by the web server user. Audit log entries are created at runtime, after Apache switches to a non-root account.
 As with all logging mechanisms, ensure that you specify a file system location that has adequate disk space and is not on the main system partition.
 
@@ -391,8 +383,6 @@ The possible values are:
 '''Example usage''': <code>SecComponentSignature "core ruleset/2.1.3"</code>
 
 '''Scope:''' Main 
-
-'''Version:''' 2.5.0-3.x
 
 This directive should be used to make the presence of significant rule sets known. The entire signature will be recorded in the transaction audit log.
 
@@ -495,10 +485,6 @@ Every rule following a previous <code>SecDefaultAction</code> directive in the s
 
 '''Scope:''' Any
 
-'''Version:''' 2.5.0
-
-'''Supported on libModSecurity:''' Yes
-
 ModSecurity relies on the free geolocation databases (GeoLite City and GeoLite Country) that can be obtained from MaxMind [http://www.maxmind.com]. Currently ModSecurity only supports the legacy GeoIP format. Maxmind's newer GeoIP2 format is not yet currently supported. 
 
 == SecGsbLookupDb ==
@@ -516,10 +502,6 @@ ModSecurity relies on the free geolocation databases (GeoLite City and GeoLite C
 
 '''Scope:''' Main 
 
-'''Version:''' 2.7.0
-
-'''Supported on libModSecurity:''' Yes
-
 If the @rbl operator uses the dnsbl.httpbl.org RBL (http://www.projecthoneypot.org/httpbl_api.php) you must provide an API key.  This key is registered to individual users and is included within the RBL DNS requests.
 
 == SecInterceptOnError ==
@@ -533,10 +515,6 @@ If the @rbl operator uses the dnsbl.httpbl.org RBL (http://www.projecthoneypot.o
 '''Example Usage''': <code>SecMarker 9999 </code>
 
 '''Scope:''' Any 
-
-'''Version:''' 2.5.0-3.x
-
-'''Supported on libModSecurity:''' Yes
 
 The value can be either a number or a text string.  The SecMarker directive is available to allow you to choose the best way to implement a skip-over. Here is an example used from the Core Rule Set:
 <pre>
@@ -587,10 +565,6 @@ The optional option "crypto" tells ModSecurity to expect some encrypted content 
 
 '''Scope:''' Any 
 
-'''Version:''' 2.9.0-RC1+
-
-'''Supported on libModSecurity:''' Yes
-
 The default action is to Abort whenever there is a problem downloading a given URL.
 
 ; Note : This directive also influences the behaviour of @ipMatchFromFile when used with a HTTPS URI to retrieve the remote file.
@@ -603,10 +577,6 @@ The default action is to Abort whenever there is a problem downloading a given U
 '''Example Usage''': <code>SecRequestBodyAccess On</code>
 
 '''Scope:''' Any 
-
-'''Version:''' 2.0.0
-
-'''Supported on libModSecurity:''' Yes
 
 This directive is required if you want to inspect the data transported request bodies (e.g., POST parameters). Request buffering is also required in order to make reliable blocking possible.  The possible values are:
 *On: buffer request bodies
@@ -641,10 +611,6 @@ During parsing of a JSON object, if nesting exceeds the configured depth limit t
 
 '''Scope:''' Any 
 
-'''Version:''' 2.0.0
-
-'''Supported on libModSecurity:''' Yes
-
 '''Default:''' 134217728 (131072 KB) 
 
 Anything over the limit will be rejected with status code 413 (Request Entity Too Large). There is a hard limit of 1 GB.
@@ -658,10 +624,6 @@ Anything over the limit will be rejected with status code 413 (Request Entity To
 '''Example Usage:''' <code>SecRequestBodyNoFilesLimit 131072 </code>
 
 '''Scope:''' Any 
-
-'''Version''': 2.5.0
-
-'''Supported on libModSecurity:''' No
 
 '''Default:''' 1048576 (1 MB)
 
@@ -691,10 +653,6 @@ By default, ModSecurity will reject a request body that is longer than specified
 
 '''Scope:''' Any 
 
-'''Version:''' 2.0.0
-
-'''Supported on libModSecurity:''' Yes
-
 '''Default''': 524288 (512 KB)
 
 Anything over this limit will be rejected with status code 500 (Internal Server Error). This setting will not affect the responses with MIME types that are not selected for buffering. There is a hard limit of 1 GB.
@@ -708,10 +666,6 @@ Anything over this limit will be rejected with status code 500 (Internal Server 
 
 '''Scope:''' Any 
 
-'''Version:''' 2.5.0
-
-'''Supported on libModSecurity:''' Yes
-
 By default, ModSecurity will reject a response body that is longer than specified. Some web sites, however, will produce very long responses, making it difficult to come up with a reasonable limit. Such sites would have to raise the limit significantly to function properly, defying the purpose of having the limit in the first place (to control memory consumption). With the ability to choose what happens once a limit is reached, site administrators can choose to inspect only the first part of the response, the part that can fit into the desired limit, and let the rest through. Some could argue that allowing parts of responses to go uninspected is a weakness. This is true in theory, but applies only to cases in which the attacker controls the output (e.g., can make it arbitrary long). In such cases, however, it is not possible to prevent leakage anyway. The attacker could compress, obfuscate, or even encrypt data before it is sent back, and therefore bypass any monitoring device.
 
 == SecResponseBodyMimeType ==
@@ -722,10 +676,6 @@ By default, ModSecurity will reject a response body that is longer than specifie
 '''Example Usage''': <code>SecResponseBodyMimeType text/plain text/html text/xml</code>
 
 '''Scope:''' Any
-
-'''Version:''' 2.0.0
-
-'''Supported on libModSecurity:''' Yes
 
 '''Default:''' text/plain text/html
 
@@ -742,10 +692,6 @@ Multiple SecResponseBodyMimeType directives can be used to add MIME types. Use S
 
 '''Scope:''' Any 
 
-'''Version:''' 2.0.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
-
 == SecResponseBodyAccess ==
 '''Description:''' Configures whether response bodies are to be buffered. 
 
@@ -754,10 +700,6 @@ Multiple SecResponseBodyMimeType directives can be used to add MIME types. Use S
 '''Example Usage:''' <code>SecResponseBodyAccess On </code>
 
 '''Scope:''' Any
-
-'''Version:''' 2.0.0
-
-'''Supported on libModSecurity:''' Yes
 
 '''Default:''' Off
 
@@ -849,12 +791,13 @@ Description: This directive creates a special rule that executes a Lua script to
 
 '''Syntax:''' <code>SecRuleScript /path/to/script.lua [ACTIONS]</code>
 
-'''Example Usage:''' <code>SecRuleScript "/path/to/file.lua" "block"</code>
+'''Example Usage:''' <code>SecRuleScript "/path/to/file.lua" "id:2,block"</code>
 
 '''Scope:''' Any
 
 '''Version:''' 3.0.0
 
+; Note : Although the software does not enforce including the 'id' action, including it is strongly advised. Omitting an id can cause problems.
 ; Note : All Lua scripts are compiled at configuration time and cached in memory. To reload scripts you must reload the entire ModSecurity configuration by restarting Apache.
 
 Example script:
@@ -926,10 +869,6 @@ end
 
 '''Scope:''' Any
 
-'''Version:''' 2.6.0-2.9.x
-
-'''Supported on libModSecurity:''' TBI
-
 This directive will overwrite the action list of the specified rule with the actions provided in the second parameter. It has two limitations: it cannot be used to change the ID or phase of a rule. Only the actions that can appear only once are overwritten. The actions that are allowed to appear multiple times in a list, will be appended to the end of the list.
 <pre>
 SecRule ARGS attack "phase:2,id:12345,t:lowercase,log,pass,msg:'Message text'"
@@ -951,10 +890,6 @@ The addition of t:none will neutralize any previous transformation functions spe
 '''Example Usage:''' <code>SecRuleUpdateTargetById 12345 "!ARGS:foo"</code>
 
 '''Scope:''' Any
-
-'''Version:''' 2.6-3.x
-
-'''Supported on libModSecurity:''' Yes
 
 This directive will append (or replace) variables to the current target list of the specified rule with the targets provided in the second parameter. Starting with 2.7.0 this feature supports id range.
 
@@ -1010,10 +945,6 @@ SecRule REQUEST_URI|ARGS_NAMES|ARGS|XML:/* "[\;\|\`]\W*?\bmail\b" \
 '''Example Usage:''' <code>SecRuleUpdateTargetByMsg "Cross-site Scripting (XSS) Attack" "!ARGS:foo"</code>
 
 '''Scope:''' Any
-
-'''Version:''' 2.7-3.x
-
-'''Supported on libModSecurity:''' Yes
 
 This directive will append (or replace) variables to the current target list of the specified rule with the targets provided in the second parameter.
 
@@ -1125,11 +1056,6 @@ libModSecurity is able to deal with request body in a file or in a buffer (chunk
 
 '''Scope:''' Any
 
-'''Version:''' 2.6.1-2.9.x
-
-'''Supported on libModSecurity:''' TBI
-
-
 == SecUploadDir ==
 '''Description:''' Configures the directory where intercepted files will be stored.
 
@@ -1138,10 +1064,6 @@ libModSecurity is able to deal with request body in a file or in a buffer (chunk
 '''Example Usage:''' <code>SecUploadDir /tmp</code>
 
 '''Scope:''' Any
-
-'''Version:''' 2.0.0-3.x
-
-'''Supported on libModSecurity:''' Yes
 
 This directory must be on the same filesystem as the temporary directory defined with SecTmpDir. This directive is used with SecUploadKeepFiles.
 
@@ -1153,10 +1075,6 @@ This directory must be on the same filesystem as the temporary directory defined
 '''Example Usage:''' <code>SecUploadFileLimit 10</code>
 
 '''Scope:''' Any
-
-'''Version:''' 2.5.12-3.x
-
-'''Supported on libModSecurity:''' Yes
 
 The default is set to 100 files, but you are encouraged to reduce this value. Any file over the limit will not be extracted and the MULTIPART_FILE_LIMIT_EXCEEDED and MULTIPART_STRICT_ERROR flags will be set. To prevent bypassing any file checks, you must check for one of these flags.
 
@@ -1171,10 +1089,6 @@ The default is set to 100 files, but you are encouraged to reduce this value. An
 
 '''Scope:''' Any
 
-'''Version:''' 2.1.6
-
-'''Supported on libModSecurity:''' Yes
-
 This feature is not available on operating systems not supporting octal file modes. The default mode (0600) only grants read/write access to the account writing the file. If access from another account is needed (using clamd is a good example), then this directive may be required. However, use this directive with caution to avoid exposing potentially sensitive data to unauthorized users. Using the value "default" will revert back to the default setting.
 
 ; Note : The process umask may still limit the mode if it is being more restrictive than the mode set using this directive.
@@ -1187,10 +1101,6 @@ This feature is not available on operating systems not supporting octal file mod
 '''Example Usage:''' <code>SecUploadKeepFiles On</code>
 
 '''Scope:''' Any
-
-'''Version:''' 2.0.0
-
-'''Supported on libModSecurity:''' Yes
 
 This directive requires the storage directory to be defined (using SecUploadDir).
 
@@ -1237,10 +1147,6 @@ In the two examples configurations shown, SecWebAppId is being used in conjuncti
 '''Example Usage:''' <code>SecXmlExternalEntity Off </code>
 
 '''Scope:''' Any 
-
-'''Version:''' 2.7.3
-
-'''Supported on libModSecurity:''' Yes
 
 '''Default:''' default is Off
 
@@ -1295,7 +1201,7 @@ This is the general-purpose output analysis phase. At this point you can run rul
 This phase is run just before logging takes place. The rules placed into this phase can only affect how the logging is performed. This phase can be used to inspect the error messages logged by Apache. You cannot deny/block connections in this phase as it is too late. This phase also allows for inspection of other response headers that weren't available during phase:3 or phase:4. Note that you must be careful not to inherit a disruptive action into a rule in this phase as this is a configuration error in ModSecurity 2.5.0 and later versions
 
 = Variables =
-The following variables are supported in ModSecurity 2.x:
+The following variables are supported in ModSecurity 3.x:
 
 == ARGS == 
 ARGS is a collection and can be used on its own (means all arguments including the POST Payload), with a static parameter (matches arguments with that name), or with a regular expression (matches all arguments with name that matches the regular expression). To look at only the query string or body arguments, see the ARGS_GET and ARGS_POST collections.
@@ -1321,8 +1227,6 @@ And sometimes you need to look at an array of parameters, each with a slightly d
 <code>SecRule ARGS:/^id_/ dirty "id:11"</code>
 
 ; Note : Using ARGS:p will not result in any invocations against the operator if argument p does not exist.
-
-In ModSecurity 1.X, the ARGS variable stood for QUERY_STRING + POST_PAYLOAD, whereas now it expands to individual variables.
 
 == ARGS_COMBINED_SIZE ==
 Contains the combined size of all request parameters. Files are excluded from the calculation. This variable can be useful, for example, to create a rule to ensure that the total size of the argument data is below a certain threshold. The following rule detects a request whose para- meters are more than 2500 bytes long:
@@ -2124,10 +2028,6 @@ Removes common comments chars (/*, */, --, #).
 
 == removeComments == 
 
-'''Version:''' 2.x-3.x
-
-'''Supported on libModSecurity:''' Yes
-
 Removes each occurrence of comment (/* ... */, --, #). Multiple consecutive occurrences of which will not be compressed.
 
 ; Note : '''This transformation is known to be unreliable, might cause some unexpected behaviour and could be deprecated soon in a future release. Refer to issue [https://github.com/SpiderLabs/ModSecurity/issues/1207 #1207] for further information.'''.
@@ -2142,8 +2042,6 @@ Decodes a URL-encoded input string. Invalid encodings (i.e., the ones that use n
 Converts all characters to uppercase using the current C locale.
 
 '''Version:''' 3.x
-
-'''Supported on libModSecurity:''' Yes
 
 == urlDecodeUni == 
 Like urlDecode, but with support for the Microsoft-specific %u encoding. If the code is in the range of FF01-FF5E (the full-width ASCII codes), then the higher byte is used to detect and adjust the lower byte. Otherwise, only the lower byte will be used and the higher byte zeroed.
@@ -2179,8 +2077,6 @@ Each action belongs to one of five groups:
 '''Description:''' Specifies the relative accuracy level of the rule related to false positives/negatives.  The value is a string based on a numeric scale (1-9 where 9 is very strong and 1 has many false positives).
 
 '''Action Group:''' Meta-data
-
-'''Version:''' 2.7
 
 '''Example:'''
 <pre>
@@ -2342,8 +2238,6 @@ The following configuration options are supported:
 #'''ruleRemoveTargetById''' - since this action is used to just remove targets, users don't need to use the char ! before the target list. 
 #'''ruleRemoveTargetByMsg''' - since this action is used to just remove targets, users don't need to use the char ! before the target list. (Supported on libModSecurity: TBI)
 #'''ruleRemoveTargetByTag''' - since this action is used to just remove targets, users don't need to use the char ! before the target list.
-#'''hashEngine''' (Supported on libModSecurity: TBI)
-#'''hashEnforcement''' (Supported on libModSecurity: TBI)
 
 With the exception of the requestBodyProcessor and forceRequestBodyVariable settings, each configuration option corresponds to one configuration directive and the usage is identical.
 
@@ -2373,10 +2267,6 @@ Example:
 
 '''Action Group:''' Non-disruptive
 
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' YES
-
 '''Example:'''
 <pre>
 # Run external program on rule match 
@@ -2389,10 +2279,6 @@ The exec action is executed independently from any disruptive actions specified.
 
 == expirevar ==
 '''Description:''' Configures a collection variable to expire after the given time period (in seconds).
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
 
 '''Action Group:''' Non-disruptive
 
@@ -2490,8 +2376,6 @@ The logdata information appears in the error and/or audit log files. Macro expan
 '''Description:''' Specifies the relative maturity level of the rule related to the length of time a rule has been public and the amount of testing it has received.  The value is a string based on a numeric scale (1-9 where 9 is extensively tested and 1 is a brand new experimental rule).
 
 '''Action Group:''' Meta-data
-
-'''Version:''' 2.7
 
 '''Example:'''
 <pre>
@@ -2680,10 +2564,6 @@ After initialization takes place, the variable USERID will be available for use 
 
 '''Action Group:''' Non-disruptive
 
-'''Version:''' 2.x-3.x
-
-'''Supported on libModSecurity:''' Yes - as of 9cb3f2 [https://github.com/SpiderLabs/ModSecurity/commit/9cb3f23b5095cad7dfba8f140a44b9523f2be78b]
-
 '''Example:'''
 <pre>
 SecAction "phase:1,pass,id:3,log,setrsc:'abcd1234'"
@@ -2712,10 +2592,6 @@ Setsid takes an individual variable, not a collection. Variables within an actio
 '''Description:''' Creates, removes, and updates environment variables that can be accessed by Apache.
 
 '''Action Group:''' Non-disruptive
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
 
 '''Examples:'''
 <pre>
@@ -3084,10 +2960,6 @@ end
 
 ; Note: Use @inspectFile with caution. It may not be safe to use @inspectFile with variables other than FILES_TMPNAMES. Other variables such as "FULL_REQUEST" may contains content that force your platform to fork process out of your control, making possible to an attacker to execute code using the same permissions of your web server. For other variables you may want to look at the Lua script engine. This observation was brought to our attention by "Gryzli", on our users mailing list.
 
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
-
 '''Reference:''' http://blog.spiderlabs.com/2010/10/advanced-topic-of-the-week-preventing-malicious-pdf-file-uploads.html
 
 '''Reference:''' http://sourceforge.net/p/mod-security/mailman/mod-security-users/?viewmonth=201512
@@ -3098,8 +2970,6 @@ end
 *Network Block/CIDR Address - 192.168.1.0/24
 *Full IPv6 Address - 2001:db8:85a3:8d3:1319:8a2e:370:7348
 *Network Block/CIDR Address - 2001:db8:85a3:8d3:1319:8a2e:370:0/24
-
-'''Version:''' 2.7
 
 '''Examples:'''
 
@@ -3115,16 +2985,12 @@ SecRule REMOTE_ADDR "@ipMatch 192.168.1.100,192.168.1.50,10.10.50.0/24" "id:162"
 == ipMatchF ==
 short alias for ipMatchFromFile
 
-'''Version:''' 2.7
-
 == ipMatchFromFile ==
 '''Description:''' Performs a fast ipv4 or ipv6 match of REMOTE_ADDR variable, loading data from a file.  Can handle the following formats:
 *Full IPv4 Address - 192.168.1.100
 *Network Block/CIDR Address - 192.168.1.0/24
 *Full IPv6 Address - 2001:db8:85a3:8d3:1319:8a2e:370:7348
 *Network Block/CIDR Address - 2001:db8:85a3:8d3:1319:8a2e:370:0/24
-
-'''Version:''' 2.7
 
 '''Examples:'''
 
@@ -3414,10 +3280,6 @@ SecRule ARGS "@verifyCC \d{13,16}" "phase:2,id:194,nolog,pass,msg:'Potential cre
 SecRule ARGS "@verifyCPF /^([0-9]{3}\.){2}[0-9]{3}-[0-9]{2}$/" "phase:2,id:195,nolog,pass,msg:'Potential CPF number',sanitiseMatched"
 </pre>
 
-'''Version:''' 2.6-3.x
-
-'''Supported on libModSecurity:''' Yes
-
 ; Note : This operator supports the "capture" action.
 
 == verifySSN ==
@@ -3429,10 +3291,6 @@ SecRule ARGS "@verifyCPF /^([0-9]{3}\.){2}[0-9]{3}-[0-9]{2}$/" "phase:2,id:195,n
 # prevent them from being logged to audit log 
 SecRule ARGS "@verifySSN \d{3}-?\d{2}-?\d{4}" "phase:2,id:196,nolog,pass,msg:'Potential social security number',sanitiseMatched"
 </pre>
-
-'''Version:''' 2.6-3.x
-
-'''Supported on libModSecurity:''' Yes
 
 '''SSN Format''': 
 
