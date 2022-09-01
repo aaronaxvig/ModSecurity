@@ -2997,8 +2997,6 @@ Your site has a wide '''select'''ion of computers.
 == detectSQLi == 
 '''Description:''' Returns true if SQL injection payload is found. This operator uses LibInjection to detect SQLi attacks.
 
-'''Version:''' 2.7.4
-
 '''Example:'''
 <pre>
 # Detect SQL Injection inside request uri data" 
@@ -3009,8 +3007,6 @@ SecRule REQUEST_URI "@detectSQLi" "id:152"
 
 == detectXSS == 
 '''Description:''' Returns true if XSS injection is found. This operator uses LibInjection to detect XSS attacks.
-
-'''Version:''' 2.8.0
 
 '''Example:'''
 <pre>
@@ -3033,10 +3029,6 @@ SecRule REQUEST_LINE "!@endsWith HTTP/1.1" "id:152"
 '''Description:''' The fuzzyHash operator uses the ssdeep, which is a program for computing context triggered piecewise hashes (CTPH). Also called fuzzy hashes, CTPH can match inputs that have homologies. Such inputs have sequences of identical bytes in the same order, although bytes in between these sequences may be different in both content and length.
 
 For further information on ssdeep, visit its site: http://ssdeep.sourceforge.net/
-
-'''Version:''' v2.9.0-RC1-2.9.x
-
-'''Supported on libModSecurity:''' TBI
 
 '''Example:'''
 <pre>
@@ -3340,31 +3332,7 @@ setvar:tx.%{rule.id}-AUTOMATION/MALICIOUS-%{matched_var_name}=%{matched_var},set
 ; Note : This operator supports the "capture" action.
 
 == rsub ==
-'''Description''': Performs regular expression data substitution when applied to either the STREAM_INPUT_BODY or STREAM_OUTPUT_BODY variables. This operator also supports macro expansion. Starting with ModSecurity 2.7.0 this operator supports the syntax |hex| allowing users to use special chars like \n \r
-
-'''Syntax:''' <code>@rsub s/regex/str/[id]</code>
-
-'''Version:''' 2.x
-
-'''Supported on libModSecurity:''' TBI
-
-'''Examples:'''
-Removing HTML Comments from response bodies:
-<pre>
-SecStreamOutBodyInspection On
-SecRule STREAM_OUTPUT_BODY "@rsub s/<!--.*?-->/ /" "phase:4,id:172,t:none,nolog,pass"
-</pre>
-
-; Note : If you plan to manipulate live data by using @rsub with the STREAM_ variables, you must also enable SecContentInjection directive.
-
-Regular expressions are handled by the PCRE library [http://www.pcre.org]. ModSecurity compiles its regular expressions with the following settings:
-#The entire input is treated as a single line, even when there are newline characters present.
-#All matches are case-sensitive. If you wish to perform case-insensitive matching, you can either use the lowercase transformation function or force case-insensitive matching by prefixing the regular expression pattern with the (?i) modifier (a PCRE feature; you will find many similar features in the PCRE documentation). Also a flag [d] should be used if you want to escape the regex string chars when use macro expansion.
-#The PCRE_DOTALL and PCRE_DOLLAR_ENDONLY flags are set during compilation, meaning that a single dot will match any character, including the newlines, and a $ end anchor will not match a trailing newline character.
-
-Regular expressions are a very powerful tool. You are strongly advised to read the PCRE documentation to get acquainted with its features.
-
-; Note : This operator supports the "capture" action.
+''Not supported in v3''' 
 
 == rx ==
 '''Description''': Performs a regular expression match of the pattern provided as parameter. '''This is the default operator; the rules that do not explicitly specify an operator default to @rx'''.
@@ -3389,6 +3357,17 @@ Regular expressions are handled by the PCRE library [http://www.pcre.org]. ModSe
 Regular expressions are a very powerful tool. You are strongly advised to read the PCRE documentation to get acquainted with its features.
 
 ; Note : This operator supports the "capture" action.
+
+== rxGlobal ==
+'''Description''': Performs a global regular expression match of the pattern provided as parameter. This emulates standard regular expression '/g' functionality, which means that, after a regular expression has been fully matched in a string, the operator will continue searching the string for additional matches of the pattern. This global matching is only useful if the additional captures are desired.
+
+'''Example:'''
+<pre>
+# From a query argument 'aaa12bbb45ccc', both '12' and '45' will be returned as captures
+SecRule ARGS_GET "@rxGlobali [0-9]+" "phase:1,id:174,capture"
+</pre>
+
+This operator is more expensive than @rx. Users are advised to use @rxGlobal only when the full captures are needed and prefer @rx in other cases.
 
 == streq ==
 '''Description:''' Performs a string comparison and returns true if the parameter string is identical to the input string. Macro expansion is performed on the parameter string before comparison.
@@ -3438,11 +3417,6 @@ SecRule ARGS "@validateByteRange 1-255" "id:179"
 </pre>
 
 ; Note : You can force requests to consist only of bytes from a certain byte range. This can be useful to avoid stack overflow attacks (since they usually contain "random" binary content). Default range values are 0 and 255, i.e. all byte values are allowed. This directive does not check byte range in a POST payload when multipart/form-data encoding (file upload) is used. Doing so would prevent binary files from being uploaded. However, after the parameters are extracted from such request they are checked for a valid range.
-
-validateByteRange is similar to the ModSecurity 1.X SecFilterForceByteRange Directive however since it works in a rule context, it has the following differences:
-*You can specify a different range for different variables.
-*It has an "event" context (id, msg....)
-*It is executed in the flow of rules rather than being a built in pre-check.
 
 == validateDTD ==
 '''Description:''' Validates the XML DOM tree against the supplied DTD. The DOM tree must have been built previously using the XML request body processor. This operator matches when the validation fails.
