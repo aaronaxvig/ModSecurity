@@ -972,6 +972,17 @@ SecRule REQUEST_URI|ARGS_NAMES|ARGS|XML:/* "[\;\|\`]\W*?\bmail\b" \
 
 libModSecurity is able to deal with request body in a file or in a buffer (chunked or not). Web servers have properties which controls whenever a request should be saved to a file or used as a buffer (e.g. client_body_buffer_size https://nginx.org/en/docs/http/ngx_http_core_module.html#client_body_buffer_size) . If it is a file, ModSecurity will use the file to perform the inspection. If not, the buffer will be used.
 
+== SecTmpSaveUploadedFiles ==
+'''Not supported in v3'''
+
+'''Description:''' Configures whether or not files uploaded via a multipart POST request will be temporarily saved to the file system.
+
+'''Syntax:''' <code>SecTmpSaveUploadedFiles On|Off</code>
+
+'''Default:''' Off
+
+When set to On, the files will, by default, be automatically deleted after the transaction is complete. If you wish to retain the files, see SecUploadKeepFiles.
+
 == SecUnicodeMapFile ==
 '''Description:''' Defines the path to the file that will be used by the urlDecodeUni transformation function to map Unicode code points during normalization and specifies the Code Point to use.
 
@@ -1013,7 +1024,7 @@ This feature is not available on operating systems not supporting octal file mod
 == SecUploadKeepFiles ==
 '''Description:''' Configures whether or not the intercepted files will be kept after transaction is processed.
 
-'''Syntax:''' <code>SecUploadKeepFiles On|Off|RelevantOnly</code>
+'''Syntax:''' <code>SecUploadKeepFiles On|Off</code>
 
 '''Example Usage:''' <code>SecUploadKeepFiles On</code>
 
@@ -1023,9 +1034,6 @@ Possible values are:
 
 *'''On''' - Keep uploaded files.
 *'''Off''' - Do not keep uploaded files.
-*'''RelevantOnly''' - This will keep only those files that belong to requests that are deemed relevant.
-
-; Note : RelevantOnly is not yet supported on libModSecurity
 
 == SecWebAppId ==
 '''Description:''' Creates an application namespace, allowing for separate persistent session and user storage.
@@ -1034,23 +1042,25 @@ Possible values are:
 
 '''Example Usage:''' <code>SecWebAppId "WebApp1" </code>
 
-'''Version:''' 3.0.0
-
 '''Default:''' default
 
 Application namespaces are used to avoid collisions between session IDs and user IDs when multiple applications are deployed on the same server. If it isn’t used, a collision between session IDs might occur.
 <pre>
-<VirtualHost *:80> 
-ServerName app1.example.com 
-SecWebAppId "App1" ...
-</VirtualHost>
+server { 
+    linsten 80;
+    server_name app1.example.com 
+    SecWebAppId "App1"
+    ... 
+}
 
-<VirtualHost *:80> 
-ServerName app2.example.com 
-SecWebAppId "App2" ...
-</VirtualHost>
+server { 
+    linsten 80;
+    server_name app2.example.com 
+    SecWebAppId "App2"
+    ... 
+}
 </pre>
-In the two examples configurations shown, SecWebAppId is being used in conjunction with the Apache VirtualHost directives. Applications namespace information is also recorded in the audit logs (using the WebApp-Info header of the H part).
+In the two examples configurations shown, SecWebAppId is being used in conjunction with the nginx server blocks. The configured value is available in the WEBAPPID variable.
 
 == SecXmlExternalEntity ==
 '''Description:''' Enable or Disable the loading process of xml external entity. Loading external entity without correct verifying process can lead to a security issue.
@@ -1425,11 +1435,9 @@ In the following example, we are evaluating to see whether the REMOTE_PORT is le
 <code>SecRule REMOTE_PORT "@lt 1024" "id:37"</code>
 
 == REMOTE_USER ==
-This variable holds the username of the authenticated user. If there are no password access controls in place (Basic or Digest authentication), then this variable will be empty.
+This variable holds the username associated with the transaction, if the username was successfully extracted from the 'Authorization' request header, if present.
 
 <code>SecRule REMOTE_USER "@streq admin" "id:38"</code>
-
-; Note : In a reverse-proxy deployment, this information will not be available if the authentication is handled in the backend web server.
 
 == REQBODY_ERROR ==
 Contains the status of the request body processor used for request body parsing. The values can be 0 (no error) or 1 (error). This variable will be set by request body processors (typically the multipart/request-data parser, JSON or the XML parser) when they fail to do their work.
@@ -1468,7 +1476,7 @@ Holds the raw request body. This variable is available only if the URLENCODED re
 As of 2.5.7, it is possible to force the presence of the REQUEST_BODY variable, but only when there is no request body processor defined using the ctl:forceRequestBodyVariable option in the REQUEST_HEADERS phase.
 
 == REQUEST_BODY_LENGTH ==
-Contains the number of bytes read from a request body. Available starting with v2.6
+Contains the number of bytes read from a request body.
 
 == REQUEST_COOKIES ==
 This variable is a collection of all of request cookies (values only).  Example: the following example is using the Ampersand special operator to count how many variables are in the collection. In this rule, it would trigger if the request does not include any Cookie headers.
@@ -1538,7 +1546,7 @@ This variable holds the data for the response body, but only when response body 
 <code>SecRule RESPONSE_BODY "ODBC Error Code" "phase:4,id:54,t:none"</code>
 
 == RESPONSE_CONTENT_LENGTH ==
-Response body length in bytes. Can be available starting with phase 3, but it does not have to be (as the length of response body is not always known in advance). If the size is not known, this variable will contain a zero. If RESPONSE_CONTENT_LENGTH contains a zero in phase 5 that means the actual size of the response body was 0. The value of this variable can change between phases if the body is modified. For example, in embedded mode, mod_deflate can compress the response body between phases 4 and 5.
+Response body length in bytes. Can be available starting with phase 3, but it does not have to be (as the length of response body is not always known in advance). If the size is not known, this variable will contain a zero. If RESPONSE_CONTENT_LENGTH contains a zero in phase 5 that means the actual size of the response body was 0.
 
 == RESPONSE_CONTENT_TYPE ==
 Response content type. Available only starting with phase 3. The value available in this variable is taken directly from the internal structures of Apache, which means that it may contain the information that is not yet available in response headers. In embedded deployments, you should always refer to this variable, rather than to RESPONSE_HEADERS:Content-Type.
@@ -1683,14 +1691,14 @@ This variable holds the current second value (0–59).
 <code>SecRule TIME_SEC "@gt 30" "id:79"</code>
 
 == TIME_WDAY ==
-This variable holds the current weekday value (0–6). The following rule triggers only on Satur- day and Sunday:
+This variable holds the current weekday value (1–7), where Monday is 1. The following rule triggers only on Saturday and Sunday:
 
-<code>SecRule TIME_WDAY "^(0|6)$" "id:80"</code>
+<code>SecRule TIME_WDAY "^(6|7)$" "id:80"</code>
 
 == TIME_YEAR ==
 This variable holds the current four-digit year value.
 
-<code>SecRule TIME_YEAR "^2006$" "id:81"</code>
+<code>SecRule TIME_YEAR "^2022$" "id:81"</code>
 
 == TX ==
 This is the transient transaction collection, which is used to store pieces of data, create a transaction anomaly score, and so on. The variables placed into this collection are available only until the transaction is complete.
@@ -1705,12 +1713,10 @@ SecRule TX:SCORE "@gt 20" "phase:2,id:83,log,deny"
 
 Some variable names in the TX collection are reserved and cannot be used: 
 *TX:0: the matching value when using the @rx or @pm operator with the capture action
-*TX:1-TX:9: the captured subexpression value when using the @rx operator with capturing parens and the capture action
-*TX:MSC_.*: ModSecurity processing flags 
-*MSC_PCRE_LIMITS_EXCEEDED: Set to nonzero if PCRE match limits are exceeded. See SecPcreMatchLimit and SecPcreMatchLimitRecursion for more information.
+*TX:1-TX:99: the captured subexpression value when using the @rx operator with capturing parens and the capture action
 
 == UNIQUE_ID ==
-This variable holds the data created by mod_unique_id [http://httpd.apache.org/docs/2.2/mod/mod_unique_id.html].  This module provides a magic token for each request which is guaranteed to be unique across "all" requests under very specific conditions. The unique identifier is even unique across multiple machines in a properly configured cluster of machines. The environment variable UNIQUE_ID is set to the identifier for each request.  The UNIQUE_ID environment variable is constructed by encoding the 112-bit (32-bit IP address, 32 bit pid, 32 bit time stamp, 16 bit counter) quadruple using the alphabet [A-Za-z0-9@-] in a manner similar to MIME base64 encoding, producing 19 characters.
+This variable holds an identifier intended to be unique to the each transaction. The ModSecurity v3 implementation is to use a millisecond timestamp, followed by a dot character ('.'), followed by a random six-digit number.
 
 == URLENCODED_ERROR == 
 This variable is created when an invalid URL encoding is encountered during the parsing of a query string (on every request) or during the parsing of an application/x-www-form-urlencoded request body (only on the requests that use the URLENCODED request body processor).
@@ -1731,8 +1737,6 @@ Not supported in v3
 
 == WEBAPPID ==
 This variable contains the current application name, which is set in configuration using SecWebAppId.
-
-'''Version:''' 3.0.0
 
 == WEBSERVER_ERROR_LOG ==
 Not supported in v3
