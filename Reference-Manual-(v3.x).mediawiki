@@ -252,19 +252,19 @@ If using <code>SecAuditLogType HTTPS</code> specify the destination url. E.g. <c
 
 '''Syntax:''' <code>SecAuditLog2 /path/to/audit.log</code> 
 
-The purpose of SecAuditLog2 is to make logging to two remote servers possible, which is typically achieved by running two instances of the mlogc tool, each with a different configuration (in addition, one of the instances will need to be instructed not to delete the files it submits). This directive can be used only if SecAuditLog was previously configured and only if concurrent logging format is used.
+This directive can be used only if SecAuditLog was previously configured and only if concurrent logging format is used.
 
 == SecAuditLogDirMode==
 '''Description:''' Configures the mode (permissions) of any directories created for the concurrent audit logs, using an octal mode value as parameter (as used in chmod).
 
 '''Syntax:''' <code>SecAuditLogDirMode octal_mode|"default"</code> 
 
-'''Default:''' 0600 
+'''Default:''' 0750 
 
-The default mode for new audit log directories (0600) only grants read/write access to the owner (typically the account under which Apache is running, for example apache). If access from other accounts is needed (e.g., for use with mpm-itk), then you may use this directive to grant additional read and/or write privileges. You should use this directive with caution to avoid exposing potentially sensitive data to unauthorized users. Using the value default as parameter reverts the configuration back to the default setting. This feature is not available on operating systems not supporting octal file modes.
+You should use this directive with caution to avoid exposing potentially sensitive data to unauthorized users. Using the value default as parameter reverts the configuration back to the default setting. This feature is not available on operating systems not supporting octal file modes.
 
 Example:
-<pre>SecAuditLogDirMode 02750</pre>
+<pre>SecAuditLogDirMode 0740</pre>
 ; Note : The process umask may still limit the mode if it is being more restrictive than the mode set using this directive.
 
 == SecAuditLogFormat ==
@@ -283,11 +283,11 @@ Example:
 
 '''Syntax:''' <code>SecAuditLogFileMode octal_mode|"default"</code> 
 
-'''Default:''' 0600
+'''Default:''' 0640
 
-'''Example Usage:''' <code>SecAuditLogFileMode 00640</code> 
+'''Example Usage:''' <code>SecAuditLogFileMode 0644</code> 
 
-This feature is not available on operating systems not supporting octal file modes. The default mode (0600) only grants read/write access to the account writing the file. If access from another account is needed (using mpm-itk is a good example), then this directive may be required. However, use this directive with caution to avoid exposing potentially sensitive data to unauthorized users. Using the value “default” will revert back to the default setting.
+This feature is not available on operating systems not supporting octal file modes. Use this directive with caution to avoid exposing potentially sensitive data to unauthorized users. Using the value “default” will revert back to the default setting.
 
 ; Note : The process umask may still limit the mode if it is being more restrictive than the mode set using this directive.
 
@@ -334,10 +334,10 @@ The main purpose of this directive is to allow you to configure audit logging fo
 
 '''Syntax''': <code>SecAuditLogStorageDir /path/to/storage/dir</code>
 
-'''Example Usage:''' <code>SecAuditLogStorageDir /usr/local/apache/logs/audit </code>
+'''Example Usage:''' <code>SecAuditLogStorageDir /tmp/modsecurity_audit </code>
 
-This directive is only needed when concurrent audit logging is used. The directory must already exist and must be writable by the web server user. Audit log entries are created at runtime, after Apache switches to a non-root account.
-As with all logging mechanisms, ensure that you specify a file system location that has adequate disk space and is not on the main system partition.
+This directive is only needed when concurrent audit logging is used. The must be writable by the web server user.
+As with all logging mechanisms, ensure that you specify a file system location that has adequate disk space.
 
 == SecAuditLogType ==
 '''Description:''' Configures the type of audit logging mechanism to be used. 
@@ -1150,7 +1150,7 @@ And sometimes you need to look at an array of parameters, each with a slightly d
 ; Note : Using ARGS:p will not result in any invocations against the operator if argument p does not exist.
 
 == ARGS_COMBINED_SIZE ==
-Contains the combined size of all request parameters. Files are excluded from the calculation. This variable can be useful, for example, to create a rule to ensure that the total size of the argument data is below a certain threshold. The following rule detects a request whose para- meters are more than 2500 bytes long:
+Contains the combined size of all request parameters. Files are excluded from the calculation. This variable can be useful, for example, to create a rule to ensure that the total size of the argument data is below a certain threshold. The following rule detects a request whose parameters are more than 2500 bytes long:
 
 <code>SecRule ARGS_COMBINED_SIZE "@gt 2500" "id:12"</code>
 
@@ -1226,8 +1226,6 @@ Represents the amount of bytes that FULL_REQUEST may use.
 
 <code>SecRule FULL_REQUEST_LENGTH "@eq 205" "id:21"</code>
 
-; Note : Available on version 2.8.0+
-
 == FILES_SIZES == 
 Contains a list of individual file sizes. Useful for implementing a size limitation on individual uploaded files. Available only on inspected multipart/form-data requests.
 
@@ -1244,7 +1242,6 @@ Useful when used together with @fuzzyHash.
 
 <code>SecRule FILES_TMP_CONTENT "@fuzzyHash $ENV{CONF_DIR}/ssdeep.txt 1" "id:192372,log,deny"</code>
 
-; Note : Available on version 2.9.0-RC1+
 ; Note II : SecUploadKeepFiles should be set to 'On' in order to have this collection filled.
 
 == GEO == 
@@ -2434,17 +2431,17 @@ SecRule REQUEST_FILENAME|ARGS_NAMES|ARGS|XML:/* "(?:(?:[\;\|\`]\W*?\bcc|\b(wget|
 SecRule REQUEST_METHOD "^PUT$" "id:340002,rev:1,severity:CRITICAL,msg:'Restricted HTTP function'"
 </pre>
 
-Severity values in ModSecurity follows the numeric scale of syslog (where 0 is the most severe).  The data below is used by the OWASP ModSecurity Core Rule Set (CRS):
-*'''0 - EMERGENCY''': is generated from correlation of anomaly scoring data where there is an inbound attack and an outbound leakage.
-*'''1 - ALERT''': is generated from correlation where there is an inbound attack and an outbound application level error.
-*'''2 - CRITICAL''': Anomaly Score of 5.  Is the highest severity level possible without correlation.  It is normally generated by the web attack rules (40 level files).
-*'''3 - ERROR''': Error - Anomaly Score of 4.  Is generated mostly from outbound leakage rules (50 level files).
-*'''4 - WARNING''': Anomaly Score of 3.  Is generated by malicious client rules (35 level files).
-*'''5 - NOTICE''': Anomaly Score of 2.  Is generated by the Protocol policy and anomaly files.
+Severity values in ModSecurity follows the numeric scale of syslog (where 0 is the most severe):
+*'''0 - EMERGENCY'''
+*'''1 - ALERT'''
+*'''2 - CRITICAL'''
+*'''3 - ERROR'''
+*'''4 - WARNING'''
+*'''5 - NOTICE'''
 *'''6 - INFO'''
 *'''7 - DEBUG'''
 
-It is possible to specify severity levels using either the numerical values or the text values, but you should always specify severity levels using the text values, because it is difficult to remember what a number stands for. The use of the numerical values is deprecated as of version 2.5.0 and may be removed in one of the subsequent major updates.
+It is possible to specify severity levels using either the numerical values or the text values, but you should always specify severity levels using the text values, because it is difficult to remember what a number stands for. The use of the numerical values is deprecated and may be removed in one of the subsequent major updates.
 
 == setuid ==
 '''Description:''' Special-purpose action that initializes the USER collection using the username provided as parameter.
