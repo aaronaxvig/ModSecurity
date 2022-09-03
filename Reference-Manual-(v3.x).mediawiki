@@ -274,8 +274,6 @@ Example:
 
 '''Default:''' Native
 
-'''Version:''' 3.0.0
-
 ; Note : The JSON format is only available if ModSecurity was compiled with support to JSON via the YAJL library. During the compilation time, the yajl-dev package (or similar) must be part of the system. The configure scripts provides information if the YAJL support was enabled or not.
 
 == SecAuditLogFileMode ==
@@ -336,8 +334,7 @@ The main purpose of this directive is to allow you to configure audit logging fo
 
 '''Example Usage:''' <code>SecAuditLogStorageDir /tmp/modsecurity_audit </code>
 
-This directive is only needed when concurrent audit logging is used. The must be writable by the web server user.
-As with all logging mechanisms, ensure that you specify a file system location that has adequate disk space.
+This directive is only needed when concurrent audit logging is used. The directory must be writable by the web server user. As with all logging mechanisms, ensure that you specify a file system location that has adequate disk space.
 
 == SecAuditLogType ==
 '''Description:''' Configures the type of audit logging mechanism to be used. 
@@ -688,40 +685,33 @@ The possible values are:
 == SecRuleRemoveById ==
 '''Description:''' Removes the matching rules from the current configuration context. 
 
-'''S
-'''Example Usage:''' <code>SecRuleRemoveByID 1 2 "9000-9010" </code>
+'''Syntax:''' <code>SecRuleRemoveById ID ID RANGE ... </code>
 
-'''Version:''' 3.0.0
+'''Example Usage:''' <code>SecRuleRemoveByID 1 2 9000-9010 </code>
 
-This directive supports multiple parameters, each of which can be a rule ID or a range. Parameters that contain spaces must be delimited using double quotes.
-
-; Note : '''This directive must be specified after the rule in which it is disabling'''.  This should be used within local custom rule files that are processed after third party rule sets.  Example file - modsecurity_crs_60_customrules.conf.
+This directive supports multiple parameters, each of which can be a rule ID or a range.
 
 == SecRuleRemoveByMsg ==
 '''Description:''' Removes the matching rules from the current configuration context. 
 
-'''Syntax:''' <code>SecRuleRemoveByMsg REGEX </code>
+'''Syntax:''' <code>SecRuleRemoveByMsg STRING </code>
 
-'''Example Usage:''' <code>SecRuleRemoveByMsg "FAIL" </code>
+'''Example Usage:''' <code>SecRuleRemoveByMsg FAIL </code>
 
-'''Version:''' 3.0.0
+Normally, you would use SecRuleRemoveById to remove rules, but this directive supports removal by matching against the rule's msg action. Matching is by case-sensitive string equality.
 
-Normally, you would use SecRuleRemoveById to remove rules, but that requires the rules to have IDs defined. If they don’t, then you can remove them with SecRuleRemoveByMsg, which matches a regular expression against rule messages.
-
-; Note : This directive must be specified after the rule in which it is disabling. This should be used within local custom rule files that are processed after third party rule sets. Example file - modsecurity_crs_60_customrules.conf.
+; Note : This functionality differs from ModSecurity v2, where matching is performed by a regular expression.
 
 == SecRuleRemoveByTag ==
 '''Description:''' Removes the matching rules from the current configuration context. 
 
 '''Syntax:''' <code>SecRuleRemoveByTag STRING </code>
 
-'''Example Usage:''' <code>SecRuleRemoveByTag "WEB_ATTACK/XSS" </code>
+'''Example Usage:''' <code>SecRuleRemoveByTag attack-dos </code>
 
-'''Version:''' 3.0.0
+Normally, you would use SecRuleRemoveById to remove rules, but it may occasionally be easier to disable an entire group of rules with SecRuleRemoveByTag. Matching is by case-sensitive string equality.
 
-Normally, you would use SecRuleRemoveById to remove rules, but it may occasionally be easier to disable an entire group of rules with SecRuleRemoveByTag. The match performed here is a simple string match, which is different from ModSecurity v2 where it is a regular expression.
-
-; Note : This directive must be specified after the rule in which it is disabling. This should be used within local custom rule files that are processed after third party rule sets. Example file - modsecurity_crs_60_customrules.conf.
+; Note : This functionality differs from ModSecurity v2, where matching is performed by a regular expression.
 
 == SecRuleScript ==
 Description: This directive creates a special rule that executes a Lua script to decide whether to match or not. The main difference from SecRule is that there are no targets nor operators. The script can fetch any variable from the ModSecurity context and use any (Lua) operator to test them. The second optional parameter is the list of actions whose meaning is identical to that of SecRule.
