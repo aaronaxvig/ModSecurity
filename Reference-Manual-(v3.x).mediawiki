@@ -508,20 +508,16 @@ SecMarker END_HOST_CHECK
 == SecRemoteRules ==
 '''Description''': Load rules from a given file hosted on a HTTPS site.
 
-'''Syntax:''' <code>SecRemoteRules [crypto] key https://url </code>
+'''Syntax:''' <code>SecRemoteRules key https://url </code>
 
 '''Example Usage''': <code>SecRemoteRules some-key https://www.yourserver.com/plain-text-rules.txt</code>
 
-'''Version:''' 3.0.0
-
-This is an optional directive that allow the user to load rules from a remote server. Notice that besides the URL the user also needs to supply a key, which could be used by the target server to provide different content for different keys. 
+This is an optional directive that allows the user to load rules from a remote server. Notice that besides the URL the user also needs to supply a key, which could be used by the target server to provide different content for different keys. 
 
 Along with the key, supplied by the users, ModSecurity will also send its Unique ID and the `status call' in the format of headers to the target web server. The following headers are used:
  - ModSec-status
  - ModSec-unique-id
  - ModSec-key
-
-The optional option "crypto" tells ModSecurity to expect some encrypted content from server. The utilization of SecRemoteRules is only allowed over TLS, thus, this option may not be necessary.
 
 ; Note : A valid and trusted digital certificate is expected on the end server. It is also expected that the server uses TLS, preferable TLS 1.2. 
 
@@ -533,8 +529,6 @@ The optional option "crypto" tells ModSecurity to expect some encrypted content 
 '''Example Usage''': <code>SecRemoteRulesFailAction Abort</code>
 
 The default action is to Abort whenever there is a problem downloading a given URL.
-
-; Note : This directive also influences the behaviour of @ipMatchFromFile when used with a HTTPS URI to retrieve the remote file.
 
 == SecRequestBodyAccess ==
 '''Description''': Configures whether request bodies will be buffered and processed by ModSecurity.
@@ -976,7 +970,9 @@ When set to On, the files will, by default, be automatically deleted after the t
 
 '''Syntax:''' <code>SecUnicodeMapFile /path/to/unicode.mapping CODEPOINT</code>
 
-'''Example Usage:''' <code>SecUnicodeMapFile unicode.mapping 20127</code>
+'''Example Usage:''' <code>SecUnicodeMapFile ./unicode.mapping 20127</code>
+
+; Note : You may need to place the unicode.mapping file in the same directory where the modsecurity.conf file is located.
 
 == SecUploadDir ==
 '''Description:''' Configures the directory where intercepted files will be stored.
@@ -1001,11 +997,13 @@ The default is set to 100 files, but you are encouraged to reduce this value. An
 == SecUploadFileMode ==
 '''Description:''' Configures the mode (permissions) of any uploaded files using an octal mode (as used in chmod).
 
-'''Syntax:''' <code>SecUploadFileMode octal_mode|"default"</code>
+'''Syntax:''' <code>SecUploadFileMode octal_mode</code>
 
 '''Example Usage:''' <code>SecUploadFileMode 0640</code>
 
-This feature is not available on operating systems not supporting octal file modes. The default mode (0600) only grants read/write access to the account writing the file. If access from another account is needed (using clamd is a good example), then this directive may be required. However, use this directive with caution to avoid exposing potentially sensitive data to unauthorized users. Using the value "default" will revert back to the default setting.
+'''Default:''' 0600
+
+This feature is not available on operating systems not supporting octal file modes. The default mode (0600) only grants read/write access to the account writing the file. If access from another account is needed, then this directive may be required. However, use this directive with caution to avoid exposing potentially sensitive data to unauthorized users.
 
 ; Note : The process umask may still limit the mode if it is being more restrictive than the mode set using this directive.
 
@@ -1219,17 +1217,17 @@ Contains a list of individual file sizes. Useful for implementing a size limitat
 <code>SecRule FILES_SIZES "@gt 100" "id:20"</code>
 
 == FILES_TMPNAMES == 
-Contains a list of temporary files’ names on the disk. Useful when used together with @inspectFile. Available only on inspected multipart/form-data requests.
+Contains a list of temporary files’ names on the disk. This is Useful when used together with @inspectFile. The executed script can use the provided filename to open the file and examine the contents. Available only on inspected multipart/form-data requests.
 
-<code>SecRule FILES_TMPNAMES "@inspectFile /path/to/inspect_script.pl" "id:21"</code>
+<code>SecRule FILES_TMPNAMES "@inspectFile /path/to/inspect_script.lua" "id:21"</code>
 
 == FILES_TMP_CONTENT == 
 Contains a key-value set where value is the content of the file which was uploaded.
 Useful when used together with @fuzzyHash.
 
-<code>SecRule FILES_TMP_CONTENT "@fuzzyHash $ENV{CONF_DIR}/ssdeep.txt 1" "id:192372,log,deny"</code>
+; Note : SecUploadKeepFiles should be set to 'On' in order to have this collection filled.
 
-; Note II : SecUploadKeepFiles should be set to 'On' in order to have this collection filled.
+<code>SecRule FILES_TMP_CONTENT "@fuzzyHash $ENV{CONF_DIR}/ssdeep.txt 1" "id:192372,log,deny"</code>
 
 == GEO == 
 GEO is a collection populated by the results of the last @geoLookup operator. The collection can be used to match geographical fields looked from an IP address or hostname.
@@ -2766,57 +2764,6 @@ SecRule &REQUEST_HEADERS_NAMES "@gt 15" "id:158"
 
 The @inspectFile operator was initially designed for file inspection (hence the name), but it can also be used in any situation that requires decision making using external logic.
 
-The OWASP ModSecurity Core Rule Set (CRS) includes a utility script in the /util directory called runav.pl [http://mod-security.svn.sourceforge.net/viewvc/mod-security/crs/trunk/util/] that allows the file approval mechanism to integrate with the ClamAV virus scanner. This is especially handy to prevent viruses and exploits from entering the web server through file upload.
-<pre>
-#!/usr/bin/perl
-#
-# runav.pl
-# Copyright (c) 2004-2011 Trustwave
-#
-# This script is an interface between ModSecurity and its
-# ability to intercept files being uploaded through the
-# web server, and ClamAV
-
-
-$CLAMSCAN = "clamscan";
-
-if ($#ARGV != 0) {
-    print "Usage: runav.pl <filename>\n";
-    exit;
-}
-
-my ($FILE) = shift @ARGV;
-
-$cmd = "$CLAMSCAN --stdout --no-summary $FILE";
-$input = `$cmd`;
-$input =~ m/^(.+)/;
-$error_message = $1;
-
-$output = "0 Unable to parse clamscan output [$1]";
-
-if ($error_message =~ m/: Empty file\.?$/) {
-    $output = "1 empty file";
-}
-elsif ($error_message =~ m/: (.+) ERROR$/) {
-    $output = "0 clamscan: $1";
-}
-elsif ($error_message =~ m/: (.+) FOUND$/) {
-    $output = "0 clamscan: $1";
-}
-elsif ($error_message =~ m/: OK$/) {
-    $output = "1 clamscan: OK";
-}
-
-print "$output\n";
-
-</pre>
-
-'''Example:'''  Using the runav.pl script:
-<pre>
-# Execute external program to validate uploaded files 
-SecRule FILES_TMPNAMES "@inspectFile /path/to/util/runav.pl" "id:159"
-</pre>
-
 Example of using Lua script (placed in the same directory as the configuration file):
 <pre>
 SecRule FILES_TMPNAMES "@inspectFile inspect.lua" "id:160"
@@ -2838,11 +2785,9 @@ function main(filename)
 end
 </pre>
 
-; Note : Starting in version 2.9 ModSecurity will not fill the FILES_TMPNAMES variable unless SecTmpSaveUploadedFiles directive is On, or the SecUploadKeepFiles directive is set to RelevantOnly.
+; Note : ModSecurity will not fill the FILES_TMPNAMES variable unless SecTmpSaveUploadedFiles directive is On, or the SecUploadKeepFiles directive is set to RelevantOnly or On.
 
 ; Note: Use @inspectFile with caution. It may not be safe to use @inspectFile with variables other than FILES_TMPNAMES. Other variables such as "FULL_REQUEST" may contains content that force your platform to fork process out of your control, making possible to an attacker to execute code using the same permissions of your web server. For other variables you may want to look at the Lua script engine. This observation was brought to our attention by "Gryzli", on our users mailing list.
-
-'''Reference:''' http://blog.spiderlabs.com/2010/10/advanced-topic-of-the-week-preventing-malicious-pdf-file-uploads.html
 
 '''Reference:''' http://sourceforge.net/p/mod-security/mailman/mod-security-users/?viewmonth=201512
 
