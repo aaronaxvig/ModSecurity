@@ -9,6 +9,12 @@ ModSecurity is supported by Trustwave's SpiderLabs Team and includes the followi
 
 ModSecurity™is an open source, free web application firewall (WAF). With over 70% of all attacks now carried out over the web application level, organizations need all the help they can get in making their systems secure. WAFs are deployed to establish an external security layer that increases security, detects and prevents attacks before they reach web applications. It provides protection from a range of attacks against web applications and allows for HTTP traffic monitoring and real-time analysis with little or no changes to existing infrastructure.
 
+== Which version of ModSecurity should I be using? v2.9.x or v3.0.x? ==
+
+ModSecurity v2.9.x is intended for use with Apache HTTP Server and Windows IIS. ModSecurity v3.0.x is for use with nginx.
+
+Both code branches (v2/master and v3/master respectively) are actively maintained and provide similar functionality.
+
 == Where do I get more help on ModSecurity? ==
 
 === Open Source/Free Help ===
@@ -80,10 +86,10 @@ Extrusion Detection Model - ModSecurity can also monitor outbound data and ident
 
 == I hear that ModSecurity can be run in embedded-mode, what does that mean exactly? ==
 
-The term "embedded" simply refers to the fact that ModSecurity, running as an Apache module, is running inside the webserver process. Most WAFs function as totally separate hosts and sit in front of the web servers. Running in embedded-mode has some advantages and disadvantages that should be considered:
+The term "embedded" simply refers to the fact that ModSecurity, is running inside the webserver process. Most WAFs function as totally separate hosts and sit in front of the web servers. Running in embedded-mode has some advantages and disadvantages that should be considered:
 
 Advantages
-Easy to add to an existing Apache server.
+Easy to add to an existing web server.
 
 Not a point of failure with respect to traffic.
 
@@ -94,9 +100,9 @@ ModSecurity will consume local resources such as CPU and RAM.
 
 Management of log files and configurations can become difficult if you have multiple installations.
 
-== I hear that ModSecurity can be run in reverse proxy-mode, how does that differ from embedded-mode? ==
+== I hear that ModSecurity can be run in reverse-proxy mode, how does that differ from embedded-mode? ==
 
-The only difference with this deployment vs. an embedded one is that Apache itself is configured to function as a reverse proxy.
+The only difference with this deployment vs. an embedded one is that the web server itself is configured to function as a reverse proxy.
 
 Advantages
 Single point of access – functions as a choke point so you consolidate applying security settings and makes management easier.
@@ -134,15 +140,13 @@ You need to enable the debug log with SecDebugLog and increase the log level wit
 
 = ModSecurity Rules Language =
 
-== What are the OWASP ModSecurity Core Rules (CRS) and why should I use them? ==
+== What are the OWASP ModSecurity Core Rules (CRS) and should I use them? ==
 
 Using ModSecurity requires rules. Installations commonly use one or more of the following:
-*A generic rule sets that provide generic protection from unknown vulnerabilities
-*A rule sets addressing known CVEs in specific applications
+*A generic rule set that provides generic protection from unknown vulnerabilities
+*A rule set addressing known CVEs in specific applications
 *Custom rules
 One of the frequently-used generic rule sets is available from the OWASP ModSecrity Core Rule Set (CRS) Project, which is managed by a separate group.
-
-== What attacks do the Core Rules protect against? ==
 
 == How do I whitelist an IP address so it can pass through ModSecurity? ==
 
