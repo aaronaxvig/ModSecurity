@@ -21,13 +21,13 @@ ModSecurity™is an open source, free web application firewall (WAF). With over 
 
 == Is there anything that I should do prior to creating a new issue? ==
 
-Yes. There is a good chance that the issue you are facing has already been discussed and, in many cases, either a fix has been produced or a workaround or mitigation has been suggested. You can review iopen issues or use a search to look for comparable issues. If you cannot find an answer to your question after doing some research, feel free to create an new issue. Please note the supplied issue templates and supply as much pertinent information as possible.
+Yes. There is a good chance that the issue you are facing has already been discussed and, in many cases, either a fix has been produced or a workaround or mitigation has been suggested. You can review open issues or use a search to look for comparable issues. If you cannot find an answer to your question after doing some research, feel free to create an new issue. Please note the supplied issue templates and supply as much pertinent information as possible.
 
 == Will I always get an immediate response to my issue? ==
 
 The github issues are "best effort". But you may get assistance from other members of the ModSecurity community other than the ModSecurity team.
 
-== When should I use the security email address? 
+== When should I use the security email address? ==
 
 That email address is intended to provide a communication channel for issues that, due to security sensitivity, are unsuited to a public forum like our github 'issues' page.
 
@@ -136,19 +136,13 @@ You need to enable the debug log with SecDebugLog and increase the log level wit
 
 == What are the OWASP ModSecurity Core Rules (CRS) and why should I use them? ==
 
-Using ModSecurity requires rules. In order to enable users to take full advantage of ModSecurity immediately, Trustwave's SpiderLabs is sponsoring the OWASP ModSecrity Core Rule Set (CRS) Project. Unlike intrusion detection and prevention systems which rely on signature specific to known vulnerabilities, the Core Rule Set provides generic protection from unknown vulnerabilities often found in web application that are in most cases custom coded. You may also consider writing custom rules for providing a positive security envelope to your application or critical parts of it. The Core Rule Set is heavily commented to allow it to be used as a step-by-step deployment guide for ModSecurity.
+Using ModSecurity requires rules. Installations commonly use one or more of the following:
+*A generic rule sets that provide generic protection from unknown vulnerabilities
+*A rule sets addressing known CVEs in specific applications
+*Custom rules
+One of the frequently-used generic rule sets is available from the OWASP ModSecrity Core Rule Set (CRS) Project, which is managed by a separate group.
 
 == What attacks do the Core Rules protect against? ==
-
-In order to provide generic web applications protection, the Core Rules use the following techniques:
-
-*HTTP protection - detecting violations of the HTTP protocol and a locally defined usage policy.
-*Common Web Attacks Protection - detecting common web application security attack.
-*Automation detection - Detecting bots, crawlers, scanners and other surface malicious activity.
-*Trojan Protection - Detecting access to Trojans horses.
-*Errors Hiding – Disguising error messages sent by the server
-
-In addition the ruleset also hints at the power of ModSecurity beyond providing security by reporting access from the major search engines to your site.
 
 == How do I whitelist an IP address so it can pass through ModSecurity? ==
 
