@@ -1,42 +1,39 @@
-= ModSecurity Frequently Asked Questions (FAQ) (Last Updated - August 28, 2014) =
+= ModSecurity Frequently Asked Questions (FAQ) (Last Full Update: August 28, 2014, Last Partial Update: Sept. 9, 2022) =
 == Who Leads the ModSecurity Project? ==
-ModSecurity is supported by Trustwave's SpiderLabs Team [https://www.trustwave.com/spiderLabs.php] and includes the following team members:
-*Ryan Barnett - ModSecurity Project Lead and OWASP ModSecurity Core Rule Set Project Lead
-*Felipe Zimmerle Costa - ModSecurity Lead Developer
-
-Suggestions for enhancements of this document are always welcome. Please email them to the Mod-Security-Users mailing list [http://lists.sourceforge.net/lists/listinfo/mod-security-users].
+ModSecurity is supported by Trustwave's SpiderLabs Team and includes the following team members:
+*@martinhsv
 
 = Background and Support =
 
 == What exactly is ModSecurity? ==
 
-ModSecurity™is an open source, free web application firewall (WAF) Apache module. With over 70% of all attacks now carried out over the web application level, organizations need all the help they can get in making their systems secure. WAFs are deployed to establish an external security layer that increases security, detects and prevents attacks before they reach web applications. It provides protection from a range of attacks against web applications and allows for HTTP traffic monitoring and real-time analysis with little or no changes to existing infrastructure.
+ModSecurity™is an open source, free web application firewall (WAF). With over 70% of all attacks now carried out over the web application level, organizations need all the help they can get in making their systems secure. WAFs are deployed to establish an external security layer that increases security, detects and prevents attacks before they reach web applications. It provides protection from a range of attacks against web applications and allows for HTTP traffic monitoring and real-time analysis with little or no changes to existing infrastructure.
 
 == Where do I get more help on ModSecurity? ==
 
-The ModSecurity website is the definitive location for all information - http://www.modsecurity.org/help.html. 
-
 === Open Source/Free Help ===
-*ModSecurity Users Mail-list (SourceForge) - http://lists.sourceforge.net/lists/listinfo/mod-security-users
-*ModSecurity Developers Mail-list (SourceForge) - http://lists.sourceforge.net/lists/listinfo/mod-security-developers
-*OWASP ModSecurity Core Rules Mail-list (OWASP) - https://lists.owasp.org/mailman/listinfo/owasp-modsecurity-core-rule-set 
-*You can also join the #modsecurity channel on irc.freenode.net.
+*https://github.com/SpiderLabs/ModSecurity/issues
+*https://github.com/SpiderLabs/ModSecurity/security/policy
 === Commercial Help ===
 *Commercial Support through Trustwave's Technical Assistance Center (TAC) - https://www3.trustwave.com/modsecurity-rules-support.php
 *Professional Services offer by Trustwave SpiderLabs Research Team
 *ModSecurity Training
 
-== Do I need to sign up for the Mod-User Mail-list before I can send emails? ==
+== Is there anything that I should do prior to creating a new issue? ==
 
-Yes, only subscribers are able to post messages. As mentioned in the previous section, you will need to visit the mail-list website to register.
+Yes. There is a good chance that the issue you are facing has already been discussed and, in many cases, either a fix has been produced or a workaround or mitigation has been suggested. You can review iopen issues or use a search to look for comparable issues. If you cannot find an answer to your question after doing some research, feel free to create an new issue. Please note the supplied issue templates and supply as much pertinent information as possible.
 
-== Is there anything that I should do prior to sending emails to the mail-list? ==
+== Will I always get an immediate response to my issue? ==
 
-Yes. There is a good chance that the issue you are facing has already been discussed and, most likely, a fix has already been presented. You can review the mail-list archive online at the ModSecurity project site on SourceForge. You can also use the Search interface available for topic threads that are archived to the various mirror sites. For example, if you had a question about Exceptions and ModSecurity, you could use the following search to find past mail-list threads on this topic. If you can not find an answer to your question after doing some research, you should then send an email to the mod-security-users mail-list.
+The github issues are "best effort". But you may get assistance from other members of the ModSecurity community other than the ModSecurity team.
 
-== Will I always get an immediate answer to my question on the open source mod-security-users mail-list? ==
+== When should I use the security email address? 
 
-The open source mod-security-users mail-list is "best effort" support meaning that we will aspire to respond to emails as quickly as possible however the actual response time may vary depending on factors such as time of day, time of week and complexity of the question. If your email is sent on the week-end or if your question involves setting up test systems, unique configurations or interactions with a custom application then it may take some time to respond.
+That email address is intended to provide a communication channel for issues that, due to security sensitivity, are unsuited to a public forum like our github 'issues' page.
+
+== What about sourceforge mailing lists? ==
+
+The ModSecurity project continues to use mod-security-packagers@lists.sourceforge.net to notify package managers of new releases. Other sourceforge mailing lists were formerly used but use of these by the ModSecurity team was discontinued years ago.
 
 == If I don't get an immediate response, should I send an email to the Trustwave Technical Support email address? ==
 
@@ -56,7 +53,7 @@ ModSecurity: Virtual Patching Workshop
 ModSecurity Handbook is "The definitive guide to the popular open source web application firewall", written by Ivan Ristic (original author of ModSecurity). The book is available from Feisty Duck in hard copy or with immediate access to the digital version which is continually updated.
 
 === Web Application Defender's Cookbook: Battling Hackers and Defending Users ===
-The Web Application Defender's Cookbook: Battling Hackers and Protecting Users is a book written by the ModSecurity Project Lead and OWASP ModSecurity Project Lead Ryan Barnett. The book outlines critical defensive techniques to protect web applications and includes example ModSecurity rules/scripts.
+The Web Application Defender's Cookbook: Battling Hackers and Protecting Users is a book written by the former ModSecurity Project Lead Ryan Barnett. The book outlines critical defensive techniques to protect web applications and includes example ModSecurity rules/scripts.
 
 === ModSecurity 2.5 ===
 ModSecurity 2.5 is "A complete guide to using ModSecurity", written by Magnus Mischel. The book is available from Packt Publishing in both hard copy and digital forms.
@@ -80,40 +77,6 @@ Positive Security Model - When positive security model is deployed, only request
 Virtual Patching - Its rule language makes ModSecurity an ideal external patching tool. External patching is all about reducing the window of opportunity. Time needed to patch application vulnerabilities often runs to weeks in many organizations. With ModSecurity, applications can be patched from the outside, without touching the application source code (and even without any access to it), making your systems secure until a proper patch is produced.
 
 Extrusion Detection Model - ModSecurity can also monitor outbound data and identify and block information disclosure issues such as leaking detailed error messages or Social Security Numbers or Credit Card Numbers.
-
-== What's new in ModSecurity and why should I upgrade if I am already using ModSecurity 1.x? ==
-
-There are many significant changes and enhancements in ModSecurity 2.5 over the 1.x branch, including:
-
-In order to use the OWASP ModSecurity Core Rules, you must use the 2.x version of ModSecurity as it takes advantage of specific features not available in previous versions.
-
-Five processing phases (where there were only two in 1.9.x). These are: request headers, request body, response headers, response body, and logging. Those users who wanted to do things at the earliest possible moment can do them now.
-
-Per-rule transformation options (previously normalization was implicit and hard-coded). Many new transformation functions were added.
-
-Transaction variables. This can be used to store pieces of data, create a transaction anomaly score, and so on.
-
-Data persistence (can be configured any way you want although most people will want to use this feature to track IP addresses, application sessions, and application users).
-
-Support for anomaly scoring and basic event correlation (counters can be automatically decreased over time; variables can be expired).
-
-Support for web applications and session IDs.
-
-Regular Expression back-references (allows one to create custom variables using transaction content).
-
-There are now many functions that can be applied to the variables (where previously one could only use regular expressions).
-
-XML support (parsing, validation, XPath).
-
-For more information, it is suggested that you review the SecurityFocus interview that Ivan Ristic gave on ModSecurity 2.0 as it outlines these new features in more detail.
-
-== How do I migrate my rules from the ModSecurity 1.x format into the 2.x format? ==
-
-Due to the many changes in the ModSecurity 2.0 rules language, you can not directly use existing rulesets. You will need to translate the functionality of any custom rules into the new rules language. A migration matrix is available here [http://www.modsecurity.org/documentation/ModSecurity-Migration-Matrix.pdf] that will assist with this process.
-
-== How do I install ModSecurity 2.0? ==
-
-The installation procedures for installing ModSecurity 2.5 has changed from previous versions. It now includes a configure script that should help to identify all local settings. After running configure, you then run the make and make install commands. You no longer use apxs directly.
 
 == I hear that ModSecurity can be run in embedded-mode, what does that mean exactly? ==
 
@@ -187,14 +150,6 @@ In order to provide generic web applications protection, the Core Rules use the 
 
 In addition the ruleset also hints at the power of ModSecurity beyond providing security by reporting access from the major search engines to your site.
 
-== Can I use the Core Rules with ModSecurity 1.x? ==
-
-Unfortunately, no. The Core Rules takes advantage of the ModSecurity 2.0 rules language and is therefore not backward compatible.
-
-== I'm getting a 'Failed to resolve operator: detectxss' error while using Core Rule Set (CRS) v3.x ==
-
-You are likely using an older version of ModSecurity. As of ModSecurity 2.8 the @detectXSS operator was added to support libInjection based XSS detection. Unfortunately, many package managers are quite far behind our current release and as a result do not support this feature yet. On these systems there typically exists other repositories or packages that will provide ModSecurity 2.8 or greater. If these are not available, CRS should still function with offending rule(s) commented out. We apologize for the inconvenience.  
-
 == How do I whitelist an IP address so it can pass through ModSecurity? ==
 
 The first issue to realize is that in ModSecurity 2.0, the allow action is only applied to the current phase. This means that if a rule matches in a subsequent phase it may still take a disruptive action. The recommended rule configuration to allow a remote IP address to bypass ModSecurity rules is to do the following (where 192.168.1.100 should be substituted with the desired IP address):
@@ -208,14 +163,6 @@ SecRule REMOTE_ADDR "@ipMatch 192.168.110" phase:1,nolog,allow,ctl:ruleEngine=De
 If you want to disable both the rule and audit engines, then you can optionally add another ctl action:
 
 SecRule REMOTE_ADDR "@ipMatch 192.168.110" phase:1,nolog,allow,ctl:ruleEngine=Off,ctl:auditEngine=Off
-
-== Are there rule differences for identify missing/empty variables between ModSecurity 1.x and 2.x? ==
-
-Yes there are. Many of these differences are outlined in the Migration Matrix document listed previously. Another common rule difference issue that arises is when you want to create white-listed ModSecurity rulesets which enforce that certain headers/variables are both present and not empty. In ModSecurity 1.x, you could create one rule that handles this while in ModSecurity 2.x you would need to write a chained rule.
-
-On the surface, you might think "The 1.x rules way is better since you only need 1 rule..." however you need to realize that anytime you have rules or directives that implicitly enforce certain capabilities, you run the risk of having false positives as it could match things that you didn't want them to. For instance, what if you have a situation where certain web clients (such as mobile devices) legitimately include some headers, however they are empty? Do you want to automatically block these clients? With the ModSecurity 1.x Rule Language, you would have to remove the entire rule. With the ModSecurity 2.x Rule Language, however, you are able to create rules to more accurately apply the logic that you desire.
-
-Please refer to the following blog post for more information.
 
 == How do I handle False Positives and creating Custom Rules? ==
 
