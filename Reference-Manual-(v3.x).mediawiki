@@ -603,7 +603,7 @@ By default, ModSecurity will reject a request body that is longer than specified
 
 '''Default''': 524288 (512 KB)
 
-Anything over this limit will be rejected with status code 500 (Internal Server Error). This setting will not affect the responses with MIME types that are not selected for buffering. There is a hard limit of 1 GB.
+Anything over this limit will be rejected. This setting will not affect the responses with MIME types that are not selected for buffering. There is a hard limit of 1 GB.
 
 == SecResponseBodyLimitAction ==
 '''Description:''' Controls what happens once a response body limit, configured with SecResponseBodyLimit, is encountered. 
@@ -624,8 +624,6 @@ By default, ModSecurity will reject a response body that is longer than specifie
 '''Default:''' text/plain text/html
 
 Multiple SecResponseBodyMimeType directives can be used to add MIME types. Use SecResponseBodyMimeTypesClear to clear previously configured MIME types and start over.
-
-; Note : Users that wish to perform JSON body inspection on response (phase 4) need to add _application/json_ to SecResponseBodyMimeType.
 
 ==  SecResponseBodyMimeTypesClear ==
 '''Description:''' Clears the list of MIME types considered for response body buffering, allowing you to start populating the list from scratch.
@@ -1404,9 +1402,8 @@ This variable holds the IP address of the remote client.
 <code>SecRule REMOTE_ADDR "@ipMatch 192.168.1.101" "id:35"</code>
 
 == REMOTE_HOST == 
-If the Apache directive HostnameLookups is set to On, then this variable will hold the remote hostname resolved through DNS. If the directive is set to Off, this variable it will hold the remote IP address (same as REMOTE_ADDR). Possible uses for this variable would be to deny known bad client hosts or network blocks, or conversely, to allow in authorized hosts.
+In ModSecurity v3, this variable is a synonym for REMOTE_ADDR.
 
-<code>SecRule REMOTE_HOST "\.evil\.network\org$" "id:36"</code>
 
 == REMOTE_PORT ==
 This variable holds information on the source port that the client used when initiating the connection to our web server.
@@ -3081,9 +3078,8 @@ The @validateUtf8Encoding operator detects the following problems:
 
 '''Example:'''
 <pre>
-# Detect credit card numbers in parameters and 
-# prevent them from being logged to audit log 
-SecRule ARGS "@verifyCC \d{13,16}" "phase:2,id:194,nolog,pass,msg:'Potential credit card number',sanitiseMatched"
+# Detect credit card numbers in parameters 
+SecRule ARGS "@verifyCC \d{13,16}" "phase:2,id:194,nolog,pass,msg:'Potential credit card number'"
 </pre>
 
 ; Note : This operator supports the "capture" action.
@@ -3093,9 +3089,8 @@ SecRule ARGS "@verifyCC \d{13,16}" "phase:2,id:194,nolog,pass,msg:'Potential cre
 
 '''Example:'''
 <pre>
-# Detect CPF numbers in parameters and 
-# prevent them from being logged to audit log 
-SecRule ARGS "@verifyCPF /^([0-9]{3}\.){2}[0-9]{3}-[0-9]{2}$/" "phase:2,id:195,nolog,pass,msg:'Potential CPF number',sanitiseMatched"
+# Detect CPF numbers in parameters 
+SecRule ARGS "@verifyCPF /^([0-9]{3}\.){2}[0-9]{3}-[0-9]{2}$/" "phase:2,id:195,nolog,pass,msg:'Potential CPF number'"
 </pre>
 
 ; Note : This operator supports the "capture" action.
@@ -3107,7 +3102,7 @@ SecRule ARGS "@verifyCPF /^([0-9]{3}\.){2}[0-9]{3}-[0-9]{2}$/" "phase:2,id:195,n
 <pre>
 # Detect social security numbers in parameters and 
 # prevent them from being logged to audit log 
-SecRule ARGS "@verifySSN \d{3}-?\d{2}-?\d{4}" "phase:2,id:196,nolog,pass,msg:'Potential social security number',sanitiseMatched"
+SecRule ARGS "@verifySSN \d{3}-?\d{2}-?\d{4}" "phase:2,id:196,nolog,pass,msg:'Potential social security number'"
 </pre>
 
 '''SSN Format''': 
