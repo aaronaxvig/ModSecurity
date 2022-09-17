@@ -1165,7 +1165,7 @@ This variable holds the authentication method used to validate a user, if any of
 Contains the number of milliseconds elapsed since the beginning of the current transaction.
 
 == ENV == 
-Collection that provides access to environment variables set by ModSecurity or other server modules. Requires a single parameter to specify the name of the desired variable.
+Collection that provides access to environment variables set by ModSecurity, via setenv, or other server modules. Requires a single parameter to specify the name of the desired variable.
 <pre>
 # Set environment variable 
 SecRule REQUEST_FILENAME "printenv" \
@@ -1177,8 +1177,6 @@ SecRule ENV:tag "suspicious" "id:16"
 # Reading an environment variable from other Apache module (mod_ssl)
 SecRule TX:ANOMALY_SCORE "@gt 0" "phase:5,id:16,msg:'%{env.ssl_cipher}'"
 </pre>
-
-; Note : Use setenv to set environment variables to be accessed by Apache.
 
 == FILES == 
 Contains a collection of original file names (as they were called on the remote user’s filesystem). Available only on inspected multipart/form-data requests.
@@ -2466,7 +2464,7 @@ Setsid takes an individual variable, not a collection. Variables within an actio
 
 
 == setenv ==
-'''Description:''' Creates, removes, and updates environment variables that can be accessed by Apache.
+'''Description:''' Creates and updates environment variables that can be accessed by both ModSecurity and the web server.
 
 '''Action Group:''' Non-disruptive
 
@@ -2474,11 +2472,9 @@ Setsid takes an individual variable, not a collection. Variables within an actio
 <pre>
 SecRule RESPONSE_HEADERS:/Set-Cookie2?/ "(?i:(j?sessionid|(php)?sessid|(asp|jserv|jw)?session[-_]?(id)?|cf(id|token)|sid))" "phase:3,t:none,pass,id:139,nolog,setvar:tx.sessionid=%{matched_var}"
 SecRule TX:SESSIONID "!(?i:\;? ?httponly;?)" "phase:3,id:140,t:none,setenv:httponly_cookie=%{matched_var},pass,log,auditlog,msg:'AppDefect: Missing HttpOnly Cookie Flag.'"
-
-Header set Set-Cookie "%{httponly_cookie}e; HTTPOnly" env=httponly_cookie
 </pre>
 
-; Note : When used in a chain this action will be execute when an individual rule matches and not the entire chain.
+; Note : Unlike in ModSecurity v2, setenv on the first rule of a chain will only execute if the entirel chain matches.
 
 == setvar ==
 '''Description:''' Creates, removes, or updates a variable. Variable names are case-insensitive.
@@ -2861,9 +2857,7 @@ SecRule &REQUEST_HEADERS_NAMES "@lt 15" "id:165"
 SecRule REQUEST_HEADERS:User-Agent "@pm WebZIP WebCopier Webster WebStripper ... SiteSnagger ProWebWalker CheeseBot" "id:166"
 </pre>
 
-; Note : Starting on ModSecurity v2.6.0 this operator supports a snort/suricata content style. ie: "@pm A|42|C|44|F".
-
-; Note : This operator does not support macro expansion (as of ModSecurity v2.9.1).
+; Note : This operator does not support macro expansion.
 
 ; Note : This operator supports the "capture" action.
 
