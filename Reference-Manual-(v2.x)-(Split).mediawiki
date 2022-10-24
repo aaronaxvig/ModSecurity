@@ -178,76 +178,7 @@ You should now have ModSecurity 2.x up and running.
 </pre>
 
 = Installation for NGINX =
-The extensibility model of the nginx server does not include dynamically loaded modules, thus ModSecurity must be compiled with the source code of the main server.  Since nginx is available on multiple Unix-based platforms (and also on Windows), for now the recommended way of obtaining ModSecurity for nginx is compilation in the designated environment.
-== Manually Installing ModSecurity Module on NGINX ==
-The first step in obtaining nginx server with built-in ModSecurity module is building of standalone library containing full ModSecurity with a set of intermediate APIs (this layer is a common base for IIS version, nginx version, and server-less command line version of ModSecurity). First prepare the build environment for ModSecurity and then follow the installation steps below.
-The standalone ModSecurity is located at https://www.modsecurity.org/download.html.
-=== Preinstallation Steps ===
-To build the standalone module from source on a GNU/Linux platform, you need to install the standard and development packages for apache and prce. For example:
-<pre>
-# RHEL/CentOS style install. You may also need systemd-devel on newer versions
-
-sudo yum install httpd httpd-devel pcre pcre-devel libxml2-devel 
-</pre>
-<pre>
-# Debian style install
-apt-get install apache2-threaded-dev libxml2-dev
-</pre>
-For details on why compiling ModSecurity for nginx requires these packages, see [https://github.com/SpiderLabs/ModSecurity/issues/603  issue 603].
-=== Installation Steps ===
-1. - Compile standalone module:
-<pre>
-~/mod_security$ ./configure --enable-standalone-module --disable-mlogc
-~/mod_security$ make
-</pre>
-Note that the path and name of the mod_security folder will differ based on what version and where you download the tarball from [https://www.modsecurity.org/download.html modsecurity.org]. 
-
-2. - Once the standalone library is built successfully, one can follow with building the nginx server, following the steps from the nginx build tutorial:
-<pre>
-~/nginx-1.2.0$ ./configure --add-module=../mod_security/nginx/modsecurity
-~/nginx-1.2.0$ make
-~/nginx-1.2.0$ sudo make install
-</pre>
-The last command performs server installation on the local machine, which can be either customized or omitted with built binaries packaged or moved to alternative server.
-=== Configuration Steps ===
-3. The ModSecurity configuration file must be linked in nginx.conf file using the following directives defined by Nginx’s ModSecurity extension module. This configures ModSecurity as an Nginx request handler(The current request flow is:
-request -> modsecurity handler -> backend). The configuration file will look similar to the following:
-<pre>
-location / {
-           ModSecurityEnabled on;
-           ModSecurityConfig modsecurity.conf;
-           # Only needed if including proxies
-           proxy_pass http://localhost:8011;
-           proxy_read_timeout 180s;
-       }
-</pre>
-A recommended sample of modSecurity.conf file can be found in the ModSecurity git repository (https://raw.githubusercontent.com/SpiderLabs/ModSecurity/master/modsecurity.conf-recommended). Note that this file makes a reference to a unicode.mapping file, which is also found in the same repository (https://raw.githubusercontent.com/SpiderLabs/ModSecurity/master/unicode.mapping). 
-
-4. Adding other configuration files (Optional):
-Because Nginx only supports one 'ModSecurityConfig' directive if you want to use a multiple configuration files (for instance OWASP CRS), you simply need to use the 'Include' directive from within the file specified in your 'ModSecurityConfig'. This directive is provided by APR and is not documented in this guide but is simple enough to use. Adding the following at the bottom of modsecurity.conf will include a file from the same directory called test.conf:
-<pre>
-Include test.conf
-</pre>
-The include directive also supports wildcard characters (*) and full paths. It should be easy to add something like the following (assuming CRS has been downloaded and installed to this path):
-<pre>
-Include /opt/owasp-modsecurity-crs/modsecurity_crs_10_setup.conf
-Include /opt/owasp-modsecurity-crs/rules/*.conf
-</pre>
-
-'''Note''': Prior to version 2.7.2 Nginx used the ModSecurityPass directive to control proxying connections, this has been removed in favor of the aforementioned version. If you are running ModSecurity 2.7.1 or before your configuration should appear similar to the following: 
-<pre>
-location / {
-           ModSecurityEnabled on;
-           ModSecurityConfig modsecurity.conf;
-           ModSecurityPass @backend;
-       }
-
-location @backend {
-           proxy_pass http://localhost:8011;
-           proxy_read_timeout 180s;
-       }
-</pre>
-When deploying via this method you will need to modify the @backend definition to point to your correct back-end web application that Nginx is proxying to. Again, Starting with ModSecurity 2.7.2 the ModSecurityPass option was removed.
+Use of ModSecurity v2 with NGINX is not supported. Please use ModSecurity v3 (libModSecurity) instead.
 
 = Installation for Microsoft IIS =
 Before installing ModSecurity make sure you have Visual Studio 2013 Runtime (vcredist) installed.
