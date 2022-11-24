@@ -2101,7 +2101,7 @@ This variable will be set to 1 when the request body size is above the setting c
 
 The best way to use this variable is as in the example below:
 
-<code>SecRule INBOUND_DATA_ERROR "@eq 1" "phase:1,id:24,t:none,log,pass,msg:'Request Body Larger than SecRequestBodyLimit Setting'"</code>
+<code>SecRule INBOUND_DATA_ERROR "@eq 1" "phase:2,id:24,t:none,log,pass,msg:'Request Body Larger than SecRequestBodyLimit Setting'"</code>
 
 == MATCHED_VAR == 
 This variable holds the value of the most-recently matched variable. It is similar to the TX:0, but it is automatically supported by all operators and there is no need to specify the capture action.
