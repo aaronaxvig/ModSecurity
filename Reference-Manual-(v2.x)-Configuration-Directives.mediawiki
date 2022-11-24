@@ -923,7 +923,7 @@ Generally speaking, the default value is not small enough. For most applications
 
 By default, ModSecurity will reject a request body that is longer than specified.  This is problematic especially when ModSecurity is being run in DetectionOnly mode and the intent is to be totally passive and not take any disruptive actions against the transaction. With the ability to choose what happens once a limit is reached, site administrators can choose to inspect only the first part of the request, the part that can fit into the desired limit, and let the rest through.  This is not ideal from a possible evasion issue perspective, however it may be acceptable under certain circumstances.
 
-; Note : When the SecRuleEngine is set to DetectionOnly, SecRequestBodyLimitAction is automatically set to ProcessPartial in order to not cause any disruptions.  If you want to know if/when a request body size is over your limit, you can create a rule to check for the existence of the INBOUND_ERROR_DATA variable.
+; Note : When the SecRuleEngine is set to DetectionOnly, SecRequestBodyLimitAction is automatically set to ProcessPartial in order to not cause any disruptions.  If you want to know if/when a request body size is over your limit, you can create a rule to check for the existence of the INBOUND_DATA_ERROR variable.
 
 == SecResponseBodyLimit ==
 '''Description:''' Configures the maximum response body size that will be accepted for buffering.
