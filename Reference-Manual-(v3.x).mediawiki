@@ -367,6 +367,8 @@ The possible values are:
 
 This directive should be used to make the presence of significant rule sets known. The entire signature will be recorded in the transaction audit log.
 
+; Note : The component signature is currently only included in audit log output when the JSON option is used with the SecAuditLogFormat directive.
+
 == SecConnEngine ==
 '''Not spported in v3'''
 
