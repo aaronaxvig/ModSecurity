@@ -1429,12 +1429,12 @@ Contains the status of the request body processor used for request body parsing.
 
 ; Note : Your policies must have a rule to check for request body processor errors at the very beginning of phase 2. Failure to do so will leave the door open for impedance mismatch attacks. It is possible, for example, that a payload that cannot be parsed by ModSecurity can be successfully parsed by more tolerant parser operating in the application. If your policy dictates blocking, then you should reject the request if error is detected. When operating in detection-only mode, your rule should alert with high severity when request body processing fails.
 
-; Related issues: #1475
-
 == REQBODY_ERROR_MSG ==
-If there’s been an error during request body parsing, the variable will contain the following error message:
+If there has been an error during request body parsing that resulted in REQBODY_ERROR getting set to 1, this variable will contain a text message containing additional information about the error that was encountered. The variable can be tested just as any other variable can:
 
-<code>SecRule REQBODY_ERROR_MSG "failed to parse" "id:40"</code>
+<code>SecRule REQBODY_ERROR_MSG "parsing error" "id:40"</code>
+
+It is more common, however, simply to output the content in a log line, as in rule 200002 in modsecurity.conf-recommended.
 
 == REQBODY_PROCESSOR ==
 Contains the name of the currently used request body processor. If set, the possible values are URLENCODED, MULTIPART, XML, and JSON.
