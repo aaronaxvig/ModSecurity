@@ -462,8 +462,6 @@ Every rule following a previous <code>SecDefaultAction</code> directive in the s
 
 ModSecurity v3 uses the newer GeoIP2 format from MaxMind [http://www.maxmind.com].
 
-To use this feature it must be enabled during the configure step using the --with-maxmind option
-
 ; Note: Recent versions of ModSecurity require a MaxMind version >= 1.4.2
 ; Note: libmaxminddb-dev and libmaxminddb0 are used for this. Some users have reported difficulties if libgeoip-dev and libgeoip1 are also installed; it was found by the reporter that removing these latter packages resolved the problem (see issue #2829).
 
@@ -1252,7 +1250,7 @@ Fields:
 
 Example:
 <pre>
-SecGeoLookupDb /usr/local/geo/data/GeoLiteCity.dat
+SecGeoLookupDB /usr/share/GeoIP/GeoLite2-Country.mmdb
 ...
 SecRule REMOTE_ADDR "@geoLookup" "chain,id:22,drop,msg:'Non-GB IP address'"
 SecRule GEO:COUNTRY_CODE "!@streq GB"
@@ -2730,7 +2728,7 @@ SecRule &REQUEST_HEADERS_NAMES "@ge 15" "id:154"
 The geoLookup operator matches on success and is thus best used in combination with nolog,pass. If you wish to block on a failed lookup (which may be over the top, depending on how accurate the geolocation database is), the following example demonstrates how best to do it:
 <pre>
 # Configure geolocation database 
-SecGeoLookupDb /path/to/GeoLiteCity.dat 
+SecGeoLookupDb /path/to/GeoLite2-Country.mmdb
 ... 
 # Lookup IP address 
 SecRule REMOTE_ADDR "@geoLookup" "phase:1,id:155,nolog,pass"
