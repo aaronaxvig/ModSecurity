@@ -4,7 +4,7 @@
 
 = Table of Contents =
 = Introduction =
-== WARNING: This document is only in the beginning stages of being adapted and modified from the v2 document. Do not rely on what you see here. ==
+== WARNING: This document is currently undergoing revision. Descriptions of ~90% of ModSecurity keywords are up to date but use this document with caution.==
 
 ModSecurity is a web application firewall (WAF). With over 70% of attacks now carried out over the web application level, organisations need all the help they can get in making their systems secure. WAFs are deployed to establish an increased external security layer to detect and/or prevent attacks before they reach web applications. ModSecurity provides protection from a range of attacks against web applications and allows for HTTP traffic monitoring and real-time analysis with little or no changes to existing infrastructure.
 
@@ -458,9 +458,14 @@ Every rule following a previous <code>SecDefaultAction</code> directive in the s
 
 '''Syntax:''' <code>SecGeoLookupDb /path/to/db </code>
 
-'''Example Usage''': <code>SecGeoLookupDb /path/to/GeoLiteCity.dat</code>
+'''Example Usage''': <code>SecGeoLookupDB /path/to/GeoLite2-Country.mmdb</code>
 
-ModSecurity relies on the free geolocation databases (GeoLite City and GeoLite Country) that can be obtained from MaxMind [http://www.maxmind.com]. Currently ModSecurity only supports the legacy GeoIP format. Maxmind's newer GeoIP2 format is not yet currently supported. 
+ModSecurity v3 uses the newer GeoIP2 format from MaxMind [http://www.maxmind.com].
+
+To use this feature it must be enabled during the configure step using the --with-maxmind option
+
+; Note: Recent versions of ModSecurity require a MaxMind version >= 1.4.2
+; Note: libmaxminddb-dev and libmaxminddb0 are used for this. Some users have reported difficulties if libgeoip-dev and libgeoip1 are also installed; it was found by the reporter that removing these latter packages resolved the problem (see issue #2829).
 
 == SecGsbLookupDb ==
 '''Not supported in v3''
