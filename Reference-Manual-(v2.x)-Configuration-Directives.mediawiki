@@ -43,7 +43,7 @@ This directive is needed if a backend web application is using a nonstandard arg
 
 '''Default:''' 1000
 
-Exceeding the limit will set the REQBODY_ERROR variable, and additional arguments beyond the limit will not be included. With JSON body processing, there is an additional short-circuit to halt parsing once the limit is breached. As with the enforcement of other issues that signal REQBODY_ERROR, a rule should be in place to test this value, like rule 200002 in modsecurit.conf-recommended.
+Exceeding the limit will set the REQBODY_ERROR variable, and additional arguments beyond the limit will not be included. With JSON body processing, there is an additional short-circuit to halt parsing once the limit is breached. As with the enforcement of other issues that signal REQBODY_ERROR, a rule should be in place to test this value, like rule 200002 in modsecurity.conf-recommended.
 
 == SecAuditEngine ==
 '''Description:''' Configures the audit logging engine. 
