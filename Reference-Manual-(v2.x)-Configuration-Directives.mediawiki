@@ -32,6 +32,19 @@ This directive is commonly used to set variables and initialize persistent colle
 
 This directive is needed if a backend web application is using a nonstandard argument separator. Applications are sometimes (very rarely) written to use a semicolon separator. You should not change the default setting unless you establish that the application you are working with requires a different separator. If this directive is not set properly for each web application, then ModSecurity will not be able to parse the arguments appropriately and the effectiveness of the rule matching will be significantly decreased.
 
+== SecArgumentsLimit ==
+'''Description:''' Configures the maximum number of ARGS that will be accepted for processing.
+
+'''Syntax:''' <code>SecArgumentsLimit LIMIT </code>
+
+'''Example Usage:''' <code>SecArgumentsLimit 1000 </code>
+
+'''Version:''' pending release 2.9.7
+
+'''Default:''' 1000
+
+Exceeding the limit will set the REQBODY_ERROR variable, and additional arguments beyond the limit will not be included. With JSON body processing, there is an additional short-circuit to halt parsing once the limit is breached. As with the enforcement of other issues that signal REQBODY_ERROR, a rule should be in place to test this value, like rule 200002 in modsecurit.conf-recommended.
+
 == SecAuditEngine ==
 '''Description:''' Configures the audit logging engine. 
 
