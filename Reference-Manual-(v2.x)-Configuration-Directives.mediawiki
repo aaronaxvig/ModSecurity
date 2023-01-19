@@ -39,7 +39,7 @@ This directive is needed if a backend web application is using a nonstandard arg
 
 '''Example Usage:''' <code>SecArgumentsLimit 1000 </code>
 
-'''Version:''' pending release 2.9.7
+'''Version:''' 2.9.7
 
 '''Default:''' 1000
 
