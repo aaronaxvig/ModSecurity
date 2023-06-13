@@ -774,7 +774,7 @@ function main()
     return nil;
 end
 </pre>
-; Note : Go to http://www.lua.org/ to find more about the Lua programming language. The reference manual too is available online, at http://www.lua.org/manual/5.1/.
+; Note : Go to http://www.lua.org/ to find more about the Lua programming language. The reference manual too is available online, at http://www.lua.org/manual/5.2/.
 
 ; Note : Lua support is marked as experimental as the way the programming interface may continue to evolve while we are working for the best implementation style. Any user input into the programming interface is appreciated.
 
