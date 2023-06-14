@@ -1447,7 +1447,7 @@ function main()
     -- Retrieve script parameters.
     local d = m.getvars("ARGS", { "lowercase", "htmlEntityDecode" } );
 
-    -- Loop through the paramters.
+    -- Loop through the parameters.
     for i = 1, #d do
         -- Examine parameter value.
         if (string.find(d[i].value, "<script")) then
