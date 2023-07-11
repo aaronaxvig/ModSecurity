@@ -15,9 +15,10 @@ If your distribution is missing and you manage to compile it, don't forget to ad
 5. [CentOS 6.x](#centos-6x)
 6. [CentOS 6.5](#centos-65-minimal)
 7. [Ubuntu 18.04](#ubuntu-1804)
-8. [Mac OSX 10.13](#mac-osx-1013)
-9. [AWS Linux - RPM](#aws-linux-rpm)
-10. [CentOS 7 - RPM](#centos-7-rpm)
+8. [Ubuntu 22.10](#ubuntu-2210)
+9. [Mac OSX 10.13](#mac-osx-1013)
+10. [AWS Linux - RPM](#aws-linux-rpm)
+11. [CentOS 7 - RPM](#centos-7-rpm)
 
 ## Centos 7 Minimal
 
@@ -325,6 +326,25 @@ $ git submodule init
 $ git submodule update
 $ sh build.sh
 $ ./configure
+$ make
+$ make install
+```
+
+## Ubuntu 22.10
+
+Assumes nginx version >=  1.21.5 and preference to use PCRE2.
+
+### libModSecurity
+
+```sh
+$ sudo apt-get install git g++ apt-utils autoconf automake build-essential libcurl4-openssl-dev libgeoip-dev liblmdb-dev libpcre2-dev libtool libxml2-dev libyajl-dev pkgconf zlib1g-dev
+
+$ git clone https://github.com/SpiderLabs/ModSecurity
+$ cd ModSecurity/
+$ git submodule init
+$ git submodule update
+$ sh build.sh
+$ ./configure --with-pcre2
 $ make
 $ make install
 ```
