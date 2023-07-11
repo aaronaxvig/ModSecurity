@@ -2993,7 +2993,7 @@ Like urlDecode, but with support for the Microsoft-specific %u encoding. If the 
 Encodes input string using URL encoding.
 
 == utf8toUnicode == 
-Converts all UTF-8 characters sequences to Unicode. This help input normalization specially for non-english languages minimizing false-positives and false-negatives. (available with 2.7.0)
+Converts all UTF-8 character sequences to Unicode (using '%uHHHH' format). This help input normalization specially for non-english languages minimizing false-positives and false-negatives.
 
 == sha1 == 
 Calculates a SHA1 hash from the input string. The computed hash is in a raw binary form and may need encoded into text to be printed (or logged). Hash functions are commonly used in combination with hexEncode (for example, t:sha1,t:hexEncode).
