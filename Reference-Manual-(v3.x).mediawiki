@@ -505,7 +505,15 @@ SecMarker END_HOST_CHECK
 </pre>
 
 == SecPcreMatchLimit ==
-'''Not supported in v3'''
+'''Description:''' Sets the PCRE match limit for executions of the @rx and @rxGlobal operators.
+
+'''Syntax:''' <code>SecPcreMatchLimit value </code>
+
+'''Example Usage''': <code>SecPcreMatchLimit 1500 </code>
+
+'''Version''': 3.0.10
+
+If the configured limit is exceeded, the variable MSC_PCRE_LIMITS_EXCEEDED will be set.
 
 == SecPcreMatchLimitRecursion ==
 '''Not supported in v3'''
@@ -1306,7 +1314,13 @@ SecRule MODSEC_BUILD "!@ge 030006100" "skipAfter:12345,id:29"
 SecRule ARGS "@pm some key words" "id:12345,deny,status:500"
 </pre>
 
+== MSC_PCRE_LIMITS_EXCEEDED==
+MSC_PCRE_LIMITS_EXCEEDED will be set to 1 if an execution of either the @rx or @rxGlobal operator exceeds the limits set by SecPcreMatchLimit.
+
+For compatibility convenience with ModSecurity v2, a synonym of this variable is also set as TX:MSC_PCRE_LIMITS_EXCEEDED.
+
 == MULTIPART_CRLF_LF_LINES == 
+
 This flag variable will be set to 1 whenever a multi-part request uses mixed line terminators. The multipart/form-data RFC requires CRLF sequence to be used to terminate lines. Since some client implementations use only LF to terminate lines you might want to allow them to proceed under certain circumstances (if you want to do this you will need to stop using MULTIPART_STRICT_ERROR and check each multi-part flag variable individually, avoiding MULTIPART_LF_LINE). However, mixing CRLF and LF line terminators is dangerous as it can allow for evasion. Therefore, in such cases, you will have to add a check for MULTIPART_CRLF_LF_LINES.
 
 == MULTIPART_FILENAME == 
