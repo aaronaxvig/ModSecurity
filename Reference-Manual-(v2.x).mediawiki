@@ -3160,7 +3160,7 @@ The following directives can be used in rule chains:
 *SecRuleScript 
 Special rules control the usage of actions in chained rules:
 *Any actions that affect the rule flow (i.e., the disruptive actions, skip and skipAfter) can be used only in the chain starter. They will be executed only if the entire chain matches.
-*Non-disruptive rules can be used in any rule; they will be executed if the rule that contains them matches and not only when the entire chain matches.
+*Non-disruptive actions can be used in any rule; they will be executed if the rule that contains them matches and not only when the entire chain matches.
 *The metadata actions (e.g., id, rev, msg) can be used only in the chain starter.
 
 == ctl ==
