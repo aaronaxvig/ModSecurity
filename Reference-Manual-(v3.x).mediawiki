@@ -1253,7 +1253,7 @@ Example:
 SecGeoLookupDB /usr/share/GeoIP/GeoLite2-Country.mmdb
 ...
 SecRule REMOTE_ADDR "@geoLookup" "chain,id:22,drop,msg:'Non-GB IP address'"
-SecRule GEO:COUNTRY_CODE "!@streq GB"
+SecRule GEO:COUNTRY_CODE "!@streq GB" ""
 </pre>
 == HIGHEST_SEVERITY == 
 This variable holds the highest severity of any rules that have matched so far. Severities are numeric values and thus can be used with comparison operators such as @lt, and so on. A value of 255 indicates that no severity has been set.
