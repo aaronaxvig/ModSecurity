@@ -1233,8 +1233,6 @@ Useful when used together with @fuzzyHash.
 == GEO == 
 GEO is a collection populated by the results of the last @geoLookup operator. The collection can be used to match geographical fields looked from an IP address or hostname.
 
-Available since ModSecurity 2.5.0.
-
 Fields:
 *COUNTRY_CODE: Two character country code. EX: US, GB, etc.
 *COUNTRY_CODE3: Up to three character country code.
@@ -1829,7 +1827,7 @@ SecRule REQUEST_HEADERS:Authorization "^Basic ([a-zA-Z0-9]+=*)$" "phase:1,id:93,
 Decode sql hex data. Example (0x414243) will be decoded to (ABC). Available as of 2.6.3
 
 == base64DecodeExt ==
-Decodes a Base64-encoded string. Unlike base64Decode, this version uses a forgiving implementation, which ignores invalid characters. Available as of 2.5.13.
+Decodes a Base64-encoded string. Unlike base64Decode, this version uses a forgiving implementation, which ignores invalid characters.
 
 See blog post on Base64Decoding evasion issues on PHP sites - http://blog.spiderlabs.com/2010/04/impedance-mismatch-and-base64.html
 
