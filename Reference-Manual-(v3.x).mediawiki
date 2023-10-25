@@ -2181,7 +2181,19 @@ SecRule ARGS:p attack "phase:2,id:113,block,exec:/usr/local/apache/conf/exec.lua
 The exec action is executed independently from any disruptive actions specified. External scripts will always be called with no parameters. Some transaction information will be placed in environment variables. All the usual CGI environment variables will be there. You should be aware that forking a threaded process results in all threads being replicated in the new process. Forking can therefore incur larger overhead in a multithreaded deployment. The script you execute must write something (anything) to stdout; if it doesn’t, ModSecurity will assume that the script failed, and will record the failure.
 
 == expirevar ==
-''Not yet supported in v3''' 
+'''Description:''' Configures a collection variable to expire after the given time period (in seconds).
+
+'''Action Group:''' Non-disruptive
+
+'''Example:'''
+<pre>
+SecRule REQUEST_COOKIES:JSESSIONID "!^$" "nolog,phase:1,id:114,pass,setsid:%{REQUEST_COOKIES:JSESSIONID}"
+SecRule REQUEST_URI "^/cgi-bin/script\.pl" "phase:2,id:115,t:none,t:lowercase,t:normalizePath,log,allow,setvar:session.suspicious=1,expirevar:session.suspicious=3600"
+</pre>
+
+You should use the expirevar actions at the same time that you use setvar actions. Only one expirevar action per rule will be executed.
+
+;Note: Available beginning with commit 2fcd373 (post v3.0.10).
 
 == id ==
 '''Description''': Assigns a unique, numeric ID to the rule or chain in which it appears.
