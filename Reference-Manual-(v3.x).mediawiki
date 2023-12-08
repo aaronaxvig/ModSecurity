@@ -2191,7 +2191,7 @@ SecRule REQUEST_URI "^/cgi-bin/script\.pl" "phase:2,id:115,t:none,t:lowercase,t:
 
 You should use the expirevar actions at the same time that you use setvar actions. Only one expirevar action per rule will be executed.
 
-;Note: Available beginning with commit 2fcd373 (post v3.0.10).
+;Note: Available beginning with v3.0.11.
 
 == id ==
 '''Description''': Assigns a unique, numeric ID to the rule or chain in which it appears.
