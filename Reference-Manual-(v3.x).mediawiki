@@ -2139,7 +2139,7 @@ The following configuration options are supported:
 #'''responseBodyAccess''' - Not supported in ModSecurity v3
 #'''responseBodyLimit''' - Not supported in ModSecurity v3
 #'''ruleEngine'''
-#'''ruleRemoveById''' - since this action us triggered at run time, it should be specified '''before''' the rule in which it is disabling.
+#'''ruleRemoveById''' - since this action is triggered at run time, it should be specified '''before''' the rule in which it is disabling.
 #'''ruleRemoveByMsg''' - Not supported in ModSecurity v3
 #'''ruleRemoveByTag'''
 #'''ruleRemoveTargetById''' - since this action is used to just remove targets, users don't need to use the char ! before the target list. 
