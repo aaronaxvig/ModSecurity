@@ -323,7 +323,7 @@ These are the reserved ranges:
 *88,000,000-88,999,999 - reserved: in use by Imunify360 - beta users
 *99,000,000-99,099,999  reserved for use by Microsoft https://azure.microsoft.com/en-us/services/web-application-firewall/
 *99,100,000-99,199,999 reserved for use by WPScan/Jetpack
-*99,200,000-99,209,999 reserved for use by SKUDONET
+*99,200,000-99,209,999 reserved for use by SKUDONET [https://www.skudonet.com]
 
 
 == initcol ==
