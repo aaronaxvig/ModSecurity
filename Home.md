@@ -2,10 +2,11 @@
 
 **The WIKI has been transferred from Trustwave to OWASP ModSecurity together with the code repo. It is partially outdated and will have to be overhauled. In the meantime, read with caution.**
 
-* [[Frequently Asked Questions  | ModSecurity-Frequently-Asked-Questions-(FAQ)]] **TO BE REVIEWED OR ARCHIVED**
-* [[Getting Help | ModSecurity-Frequently-Asked-Questions-(FAQ)#where-do-i-get-more-help-on-modsecurity]]  **TO BE REVIEWED OR ARCHIVED**
 
 # 📚 Documentation
+
+* [[Frequently Asked Questions  | ModSecurity-Frequently-Asked-Questions-(FAQ)]] **TO BE REVIEWED OR ARCHIVED**
+* [[Getting Help | ModSecurity-Frequently-Asked-Questions-(FAQ)#where-do-i-get-more-help-on-modsecurity]]  **TO BE REVIEWED OR ARCHIVED**
 
 ###  ModSecurity version 3 / libModSecurity version 3
    - [[Installation from source | Compilation-recipes-for-v3.x]]
@@ -30,7 +31,7 @@
 * [[Pcap Connector | https://github.com/owasp-modsecurity/ModSecurity-pcap]]
 * [[Python Bindings | https://github.com/owasp-modsecurity/ModSecurity-Python-bindings]]
 
-![](http://4.bp.blogspot.com/-yBt4bglIBdU/VpOni6ipQEI/AAAAAAAATmM/v2H1u_w4dIA/s400/6a0133f264aa62970b01b7c7fe12d5970b.png)
+
 
 # Wiki Archive
 
@@ -43,3 +44,6 @@ These are legacy pages, that are kept around for future reference.
 * [[Tools]] **TO BE ARCHIVED**
 * Development [[Roadmap]]  **TO BE ARCHIVED**
 * [[Ideas Google Summer of Code 2016 | Ideas-for-Google-Summer-of-Code-2016]] **TO BE ARCHIVED**
+
+Architecture graphic that is not quite easy to grasp and a caption is missing: 
+![](http://4.bp.blogspot.com/-yBt4bglIBdU/VpOni6ipQEI/AAAAAAAATmM/v2H1u_w4dIA/s400/6a0133f264aa62970b01b7c7fe12d5970b.png)
