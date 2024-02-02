@@ -1,8 +1,9 @@
 **ModSecurity is an open source, cross platform web application firewall (WAF) engine** donated to OWASP in 2024. It has a robust event-based programming language which provides protection from a range of attacks against web applications and allows for HTTP traffic monitoring, logging and real-time analysis. Securing tens of millions of domains, ModSecurity is the most widely deployed WAF engine in existence. 
 
+**The WIKI has been transferred from Trustwave to OWASP ModSecurity together with the code repo. It is partially outdated and will have to be overhauled. In the meantime, read with caution.**
 
 * [[Frequently Asked Questions  | ModSecurity-Frequently-Asked-Questions-(FAQ)]] **TO BE REVIEWED OR ARCHIVED**
-* [[Getting Help | ModSecurity-Frequently-Asked-Questions-(FAQ)#where-do-i-get-more-help-on-modsecurity]]
+* [[Getting Help | ModSecurity-Frequently-Asked-Questions-(FAQ)#where-do-i-get-more-help-on-modsecurity]]  **TO BE REVIEWED OR ARCHIVED**
 
 # 📚 Documentation
 
