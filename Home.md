@@ -15,15 +15,6 @@
    - [[Reference Manual v2.x (Split) | Reference-Manual-(v2.x) (Split)]]
    - [[Windows Troubleshooting | IIS-Troubleshooting]]
 
-
-* [[Log Data Format|ModSecurity-2-Data-Formats]] **TO BE ARCHIVED**
-* [[Tools]]
-
-### External documentation
-
-* [ModSecurity 3.0 and NGINX: Quick Start Guide](https://www.nginx.com/resources/library/modsecurity-3-nginx-quick-start-guide/)
-
-
 # 🚢 Development
 
 * [[Roadmap]]
@@ -48,3 +39,10 @@ __Components__
 * [[Python Bindings | https://github.com/SpiderLabs/ModSecurity-Python-bindings]]
 
 ![](http://4.bp.blogspot.com/-yBt4bglIBdU/VpOni6ipQEI/AAAAAAAATmM/v2H1u_w4dIA/s400/6a0133f264aa62970b01b7c7fe12d5970b.png)
+
+# Wiki Archive
+
+These are legacy pages, that are kept around for future reference.
+
+* [[Log Data Format|ModSecurity-2-Data-Formats]] **TO BE ARCHIVED**
+* [[Tools]] **TO BE ARCHIVED**
