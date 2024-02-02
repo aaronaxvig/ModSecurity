@@ -1,4 +1,4 @@
-**ModSecurity is an open source, cross platform web application firewall (WAF)** developed by Trustwave's SpiderLabs. It has a robust event-based programming language which provides protection from a range of attacks against web applications and allows for HTTP traffic monitoring, logging and real-time analysis. Securing tens of millions of domains, ModSecurity is the most widely deployed WAF engine in existence. 
+**ModSecurity is an open source, cross platform web application firewall (WAF) engine** donated to OWASP in 2024. It has a robust event-based programming language which provides protection from a range of attacks against web applications and allows for HTTP traffic monitoring, logging and real-time analysis. Securing tens of millions of domains, ModSecurity is the most widely deployed WAF engine in existence. 
 
 
 * [[Frequently Asked Questions  | ModSecurity-Frequently-Asked-Questions-(FAQ)]]
