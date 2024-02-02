@@ -18,9 +18,8 @@
 
 # 🚢 Development
 
-* [[Milestones | https://github.com/SpiderLabs/ModSecurity/milestones]]
 * [[Debugging | Debugging-ModSecurity]] 
-* [[Distribution specific packaging | Package-Generation]]
+
 
 
 -------
@@ -43,6 +42,8 @@ __Components__
 
 These are legacy pages, that are kept around for future reference.
 
+* [[Milestones | https://github.com/SpiderLabs/ModSecurity/milestones]]  **TO BE ARCHIVED**
+* [[Distribution specific packaging | Package-Generation]] **TO BE ARCHIVED**
 * [[Log Data Format|ModSecurity-2-Data-Formats]] **TO BE ARCHIVED**
 * [[Tools]] **TO BE ARCHIVED**
 * Development [[Roadmap]]  **TO BE ARCHIVED**
