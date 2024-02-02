@@ -19,6 +19,8 @@
 
 # 🚢 Development
 
+* [[OWASP ModSecurity Roadmap]]
+* [[OWASP ModSecurity Contributing]] and development guidance
 * [[Debugging | Debugging-ModSecurity]] 
 * [[Original v3 Motivations & Goals | http://blog.zimmerle.org/2016/01/an-overview-of-upcoming-libmodsecurity.html]] (Blog Post)
 
