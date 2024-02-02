@@ -19,22 +19,16 @@
 # 🚢 Development
 
 * [[Debugging | Debugging-ModSecurity]] 
+* [[Original v3 Motivations & Goals | http://blog.zimmerle.org/2016/01/an-overview-of-upcoming-libmodsecurity.html]] (Blog Post)
 
 
+## v3 Components
 
--------
-
-# ModSecurity 3
-* [[Motivations & Goals | http://blog.zimmerle.org/2016/01/an-overview-of-upcoming-libmodsecurity.html]] (Blog Post)
-* [[Overview of Changes | ModSecurity-version-3-(earlier-release-candidate-1)]]
-
-__Components__
-
-* [[libModSecurity | https://github.com/SpiderLabs/ModSecurity/tree/v3/master]]
-* [[Nginx Connector | https://github.com/SpiderLabs/ModSecurity-nginx]]
-* [[Apache Connector | https://github.com/SpiderLabs/ModSecurity-apache]]
-* [[Pcap Connector | https://github.com/SpiderLabs/ModSecurity-pcap]]
-* [[Python Bindings | https://github.com/SpiderLabs/ModSecurity-Python-bindings]]
+* [[libModSecurity | https://github.com/owasp-modsecurity/ModSecurity/tree/v3/master]]
+* [[Nginx Connector | https://github.com/owasp-modsecurity/ModSecurity-nginx]]
+* [[Apache Connector | https://github.com/owasp-modsecurity/ModSecurity-apache]]
+* [[Pcap Connector | https://github.com/owasp-modsecurity/ModSecurity-pcap]]
+* [[Python Bindings | https://github.com/owasp-modsecurity/ModSecurity-Python-bindings]]
 
 ![](http://4.bp.blogspot.com/-yBt4bglIBdU/VpOni6ipQEI/AAAAAAAATmM/v2H1u_w4dIA/s400/6a0133f264aa62970b01b7c7fe12d5970b.png)
 
@@ -42,6 +36,7 @@ __Components__
 
 These are legacy pages, that are kept around for future reference.
 
+* [[Overview of Changes | ModSecurity-version-3-(earlier-release-candidate-1)]] ** TO BE ARCHIVED **
 * [[Milestones | https://github.com/SpiderLabs/ModSecurity/milestones]]  **TO BE ARCHIVED**
 * [[Distribution specific packaging | Package-Generation]] **TO BE ARCHIVED**
 * [[Log Data Format|ModSecurity-2-Data-Formats]] **TO BE ARCHIVED**
