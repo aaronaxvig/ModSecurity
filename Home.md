@@ -39,7 +39,7 @@
 
 These are legacy pages, that are kept around for future reference.
 
-* [[Overview of Changes | ModSecurity-version-3-(earlier-release-candidate-1)]] ** TO BE ARCHIVED **
+* [[Overview of Changes | ModSecurity-version-3-(earlier-release-candidate-1)]] **TO BE ARCHIVED**
 * [[Milestones | https://github.com/SpiderLabs/ModSecurity/milestones]]  **TO BE ARCHIVED**
 * [[Distribution specific packaging | Package-Generation]] **TO BE ARCHIVED**
 * [[Log Data Format|ModSecurity-2-Data-Formats]] **TO BE ARCHIVED**
