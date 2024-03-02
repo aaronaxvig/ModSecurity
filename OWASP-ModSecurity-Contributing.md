@@ -2,7 +2,7 @@
 
 ModSecurity has a long history but it was only in January 2024 that it has been transferred to OWASP. When OWASP ModSecurity started, there was no development community and we are now building this community from the ground up.
 
-We want this to be a welcoming development community with strong technical skills and an excellent culture.
+**We want this to be a welcoming development community with strong technical skills and an excellent culture.**
 
 The guidelines will grow and expand as we move forward. We start with the bare minimum.
 
