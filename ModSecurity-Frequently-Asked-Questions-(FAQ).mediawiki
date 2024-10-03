@@ -46,9 +46,9 @@ That email address is intended to provide a communication channel for issues tha
 
 The ModSecurity project continues to use mod-security-packagers@lists.sourceforge.net to notify package managers of new releases. Other sourceforge mailing lists were formerly used but use of these by the ModSecurity team was discontinued years ago.
 
-== If I don't get an immediate response, should I send an email to the Trustwave Technical Support email address? ==
+== If I don't get an immediate response, should I send an email to the OWASP Technical Support email address? ==
 
-No. The Trustwave Technical Support email address is for commercial ModSecurity customers only.
+No. The OWASP Technical Support email address is for general concerns with OWASP only.
 
 
 Training
