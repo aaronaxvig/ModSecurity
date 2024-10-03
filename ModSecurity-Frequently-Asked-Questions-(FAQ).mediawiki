@@ -1,11 +1,12 @@
-= ModSecurity Frequently Asked Questions (FAQ) (Last Full Update: August 28, 2014, Last Partial Update: Sept. 9, 2022) =
+= ModSecurity Frequently Asked Questions (FAQ) (Last Full Update: August 28, 2014, Last Partial Update: Oct. 10, 2024) =
 
-'''OWASP ModSecurity took over the ModSecurity project in January 2024. The information in this wiki document will have to be revised or retired, since it's probably outdated.'''
+'''OWASP ModSecurity took over the ModSecurity project in January 2024. The information in this wiki document will have to be revised, since some parts may be outdated.'''
 
 == Who Leads the ModSecurity Project? ==
 
-ModSecurity is supported by Trustwave's SpiderLabs Team and includes the following team members:
-*@martinhsv
+ModSecurity is supported by OWASP and includes the following team members:
+*@airween
+*@marcstern
 
 = Background and Support =
 
