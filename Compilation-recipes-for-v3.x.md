@@ -29,7 +29,7 @@ Sent by @elialum (See: #1039)
 ```sh
 yum install gcc-c++ flex bison yajl yajl-devel curl-devel curl GeoIP-devel doxygen zlib-devel pcre-devel
 cd /opt/
-git clone https://github.com/SpiderLabs/ModSecurity
+git clone https://github.com/owasp-modsecurity/ModSecurity
 cd ModSecurity
 git checkout -b v3/master origin/v3/master
 sh build.sh
@@ -48,7 +48,7 @@ make install
 export MODSECURITY_INC="/opt/ModSecurity/headers/"
 export MODSECURITY_LIB="/opt/ModSecurity/src/.libs/"
 cd /opt/
-git clone https://github.com/SpiderLabs/ModSecurity-nginx
+git clone https://github.com/owasp-modsecurity/ModSecurity-nginx
 wget http://nginx.org/download/nginx-1.9.2.tar.gz
 tar -xvzf nginx-1.9.2.tar.gz
 cd /opt/nginx-1.9.2
@@ -68,7 +68,7 @@ Check nginx -v for the NGINX version and change appropriately; here it's 1.15.7.
 sudo yum groupinstall 'Development Tools' -y
 sudo yum install gcc-c++ flex bison yajl yajl-devel curl-devel curl GeoIP-devel doxygen zlib-devel
 sudo yum install lmdb lmdb-devel libxml2 libxml2-devel ssdeep ssdeep-devel lua lua-devel
-sudo git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity
+sudo git clone --depth 1 -b v3/master --single-branch https://github.com/owasp-modsecurity/ModSecurity
 cd ModSecurity
 sudo git submodule init
 sudo git submodule update
@@ -76,7 +76,7 @@ sudo ./build.sh
 sudo ./configure
 sudo make
 sudo make install
-sudo git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git
+sudo git clone --depth 1 https://github.com/owasp-modsecurity/ModSecurity-nginx.git
 sudo wget http://nginx.org/download/nginx-1.15.7.tar.gz
 sudo tar zxvf nginx-1.15.7.tar.gz
 cd nginx-1.15.7
@@ -116,7 +116,7 @@ wget ftp://rpmfind.net/linux/fedora/linux/releases/23/Everything/x86_64/os/Packa
 rpm -i GeoIP-1.6.6-1.fc23.x86_64.rpm  GeoIP-data-20090201-1.el5.centos.x86_64.rpm
 rpm -i GeoIP-devel-1.6.6-1.fc23.x86_64.rpm
 rm -rf *.rpm
-git clone https://github.com/SpiderLabs/ModSecurity
+git clone https://github.com/owasp-modsecurity/ModSecurity
 cd ModSecurity
 git checkout -b v3/master origin/v3/master
 sh build.sh
@@ -149,7 +149,7 @@ cd ssdeep/
 ./configure && make && make install
 # Install libmodsecurity
 cd /opt/
-git clone https://github.com/SpiderLabs/ModSecurity
+git clone https://github.com/owasp-modsecurity/ModSecurity
 cd ModSecurity
 ./build
 git submodule init
@@ -159,7 +159,7 @@ make
 make install
 # Install Nginx + Nginx Connector
 cd /opt
-git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git
+git clone --depth 1 https://github.com/owasp-modsecurity/ModSecurity-nginx.git
 # Nginx
 wget https://nginx.org/download/nginx-1.15.10.tar.gz
 tar -xvzf nginx-1.15.10.tar.gz 
@@ -173,7 +173,7 @@ make install
 
 ```sh
 cd /opt/
-git clone https://github.com/SpiderLabs/ModSecurity-nginx
+git clone https://github.com/owasp-modsecurity/ModSecurity-nginx
 wget http://nginx.org/download/nginx-1.9.2.tar.gz
 tar -xvzf nginx-1.9.2.tar.gz
 cd /opt/nginx-1.9.2
@@ -190,7 +190,7 @@ Provided by @moodygit
 
 ```sh
 $ cd /opt/
-$ git clone https://github.com/SpiderLabs/ModSecurity
+$ git clone https://github.com/owasp-modsecurity/ModSecurity
 $ cd ModSecurity
 $ git checkout -b v3/master origin/v3/master
 $ sh build.sh
@@ -205,7 +205,7 @@ $ make install
 
 ```sh
 $ cd /opt/
-$ git clone https://github.com/SpiderLabs/ModSecurity-nginx
+$ git clone https://github.com/owasp-modsecurity/ModSecurity-nginx
 $ wget https://openresty.org/download/ngx_openresty-1.9.7.1.tar.gz
 $ tar -xvzf ngx_openresty-1.9.7.1.tar.gz
 $ ./configure --add-module=/opt/ModSecurity-nginx
@@ -304,7 +304,7 @@ make install
 
 ```sh
 cd /opt/
-git clone https://github.com/SpiderLabs/ModSecurity-nginx
+git clone https://github.com/owasp-modsecurity/ModSecurity-nginx
 wget http://nginx.org/download/nginx-1.9.2.tar.gz
 tar -xvzf nginx-1.9.2.tar.gz
 cd /opt/nginx-1.9.2
@@ -320,7 +320,7 @@ make install
 ```sh
 $ sudo apt-get install git g++ apt-utils autoconf automake build-essential libcurl4-openssl-dev libgeoip-dev liblmdb-dev libpcre++-dev libtool libxml2-dev libyajl-dev pkgconf wget zlib1g-dev
 
-$ git clone https://github.com/SpiderLabs/ModSecurity
+$ git clone https://github.com/owasp-modsecurity/ModSecurity
 $ cd ModSecurity/
 $ git submodule init
 $ git submodule update
@@ -339,7 +339,7 @@ Assumes nginx version >=  1.21.5 and preference to use PCRE2.
 ```sh
 $ sudo apt-get install git g++ apt-utils autoconf automake build-essential libcurl4-openssl-dev libgeoip-dev liblmdb-dev libpcre2-dev libtool libxml2-dev libyajl-dev pkgconf zlib1g-dev
 
-$ git clone https://github.com/SpiderLabs/ModSecurity
+$ git clone https://github.com/owasp-modsecurity/ModSecurity
 $ cd ModSecurity/
 $ git submodule init
 $ git submodule update
@@ -368,7 +368,7 @@ sudo chown -R $(whoami) /usr/local/modsecurity
 
 cd /usr/local/opt
 mkdir ModSecurity
-git clone https://github.com/SpiderLabs/ModSecurity && cd ModSecurity
+git clone https://github.com/owasp-modsecurity/ModSecurity && cd ModSecurity
 git checkout -b v3/master origin/v3/master
 sh build.sh
 git submodule init && git submodule update
@@ -386,7 +386,7 @@ MOD_SECURITY_INC=/usr/local/opt/ModSecurity/headers/
 MOD_SECURITY_LIB=/usr/local/opt/ModSecurity/src/.libs/
 
 cd /usr/local/opt/
-git clone https://github.com/SpiderLabs/ModSecurity-nginx
+git clone https://github.com/owasp-modsecurity/ModSecurity-nginx
 
 # NOW edit the brew nginx formula to have two chunks added (brew edit nginx)
     option "with-modsecurity", "Compile with v3 ModSecurity module"
@@ -427,7 +427,7 @@ yum install -y git rpm-build gperftools-devel openssl-devel pcre-devel zlib-deve
 GeoIP-devel gd-devel perl-devel libxslt-devel perl-ExtUtils-Embed.noarch gcc gcc-c++ autoconf automake libtool
  Clone modsecurity repository & compile modsecurity connector
 
-git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity
+git clone --depth 1 -b v3/master --single-branch https://github.com/owasp-modsecurity/ModSecurity
 cd ModSecurity
 git submodule init
 git submodule update
@@ -443,7 +443,7 @@ make install
 ```
 cd /root
 mkdir nginx
-git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git
+git clone --depth 1 https://github.com/owasp-modsecurity/ModSecurity-nginx.git
 
 #unpack correct version from rpm package
 tar zxf /root/rpmbuild/SOURCES/nginx-1.12.2.tar.gz
@@ -544,7 +544,7 @@ rpm -i nginx-1.12.2-2.el7.src.rpm
 ### libModSecurity
 
 ```
-git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity
+git clone --depth 1 -b v3/master --single-branch https://github.com/owasp-modsecurity/ModSecurity
 cd ModSecurity
 git submodule init
 git submodule update
@@ -560,7 +560,7 @@ make install
 ```
 cd /root
 mkdir nginx
-git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git
+git clone --depth 1 https://github.com/owasp-modsecurity/ModSecurity-nginx.git
 #unpack correct version from rpm package
 tar zxf /root/rpmbuild/SOURCES/nginx-1.12.2.tar.gz
 cd nginx-1.12.2/
