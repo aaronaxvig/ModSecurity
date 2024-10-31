@@ -3320,6 +3320,7 @@ These are the reserved ranges:
 *4,200,000-4,299,999 reserved: in use by CMS-Garden [https://www.cms-garden.org/en]
 *4,300,000-4,300,999 reserved: in use by Ensim.hu [http://ensim.hu/]
 *4,301,000-19,999,999: unused (available for reservation)
+*8,000,000-8,999,999 reserved: in use by Yandex
 *20,000,000-21,999,999: reserved for rules from Trustwave's SpiderLabs Research team
 *22,000,000-69,999,999: unused (available for reservation)
 *77,000,000-77,999,999 - reserved: in use by Imunify360 - production rules
