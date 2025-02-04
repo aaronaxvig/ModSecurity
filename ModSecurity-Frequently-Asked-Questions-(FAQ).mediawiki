@@ -96,12 +96,15 @@ The term "embedded" simply refers to the fact that ModSecurity is running inside
 Advantages
 
 - Easy to add to an existing web server.
+
 - Not a point of failure with respect to traffic.
 
 Disadvantages
 
 - ModSecurity can only protect the local web server.
+
 - ModSecurity will consume local resources such as CPU and RAM.
+
 - Management of log files and configurations can become difficult if you have multiple installations.
 
 == I hear that ModSecurity can be run in reverse-proxy mode. How does that differ from embedded-mode? ==
@@ -111,14 +114,19 @@ The only difference with this deployment vs. an embedded one is that the web ser
 Advantages
 
 - Single point of access functions as a choke point so you consolidate applying security settings and makes management easier.
+
 - Network topology is hidden from the outside world so it will be more difficult for attackers to enumerate your web platforms.
+
 - Increased performance if SSL accelerators/caching used.
+
 - You can implement vulnerability filters to protect and vulnerable web server or application on the back-end (IIS, Netscape, ASP, PHP, etc.). See related section on Virtual Patching.
 
 Disadvantages
 
 - A potential traffic bottleneck if the reverse proxy can not handle the network load.
+
 - A potential point of failure: if the reverse proxy goes down it may cause a denial of service to the web applications that are behind it.
+
 - Requires changes to the network.
 
 = Configuring ModSecurity =
