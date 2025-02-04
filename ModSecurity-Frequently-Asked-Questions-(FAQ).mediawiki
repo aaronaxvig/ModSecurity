@@ -91,45 +91,41 @@ Extrusion Detection Model - ModSecurity can also monitor outbound data and ident
 
 == I hear that ModSecurity can be run in embedded-mode, what does that mean exactly? ==
 
-The term "embedded" simply refers to the fact that ModSecurity, is running inside the webserver process. Most WAFs function as totally separate hosts and sit in front of the web servers. Running in embedded-mode has some advantages and disadvantages that should be considered:
+The term "embedded" simply refers to the fact that ModSecurity is running inside the webserver process. Most WAFs function as totally separate hosts and sit in front of the web servers. Running in embedded-mode has some tradeoffs that should be considered:
 
 Advantages
-Easy to add to an existing web server.
 
-Not a point of failure with respect to traffic.
+- Easy to add to an existing web server.
+- Not a point of failure with respect to traffic.
 
 Disadvantages
-ModSecurity can only protect the local web server.
 
-ModSecurity will consume local resources such as CPU and RAM.
+- ModSecurity can only protect the local web server.
+- ModSecurity will consume local resources such as CPU and RAM.
+- Management of log files and configurations can become difficult if you have multiple installations.
 
-Management of log files and configurations can become difficult if you have multiple installations.
-
-== I hear that ModSecurity can be run in reverse-proxy mode, how does that differ from embedded-mode? ==
+== I hear that ModSecurity can be run in reverse-proxy mode. How does that differ from embedded-mode? ==
 
 The only difference with this deployment vs. an embedded one is that the web server itself is configured to function as a reverse proxy.
 
 Advantages
-Single point of access – functions as a choke point so you consolidate applying security settings and makes management easier.
 
-Network topology is hidden from the outside world - so it will be more difficult for attackers to enumerate your web platforms.
-
-Increased performance – if SSL accelerators/caching used.
-
-You can implement vulnerability filters to protect and vulnerable web server or application on the back-end (IIS, Netscape, ASP, PHP, etc...). See related section on Virtual Patching.
+- Single point of access functions as a choke point so you consolidate applying security settings and makes management easier.
+- Network topology is hidden from the outside world so it will be more difficult for attackers to enumerate your web platforms.
+- Increased performance if SSL accelerators/caching used.
+- You can implement vulnerability filters to protect and vulnerable web server or application on the back-end (IIS, Netscape, ASP, PHP, etc.). See related section on Virtual Patching.
 
 Disadvantages
-A potential traffic bottleneck if the reverse proxy can not handle the network load.
 
-A potential point of failure - if the reverse proxy goes down it may cause a denial of service to the web applications that are behind it.
-
-Requires changes to the network.
+- A potential traffic bottleneck if the reverse proxy can not handle the network load.
+- A potential point of failure: if the reverse proxy goes down it may cause a denial of service to the web applications that are behind it.
+- Requires changes to the network.
 
 = Configuring ModSecurity =
 
 == Should I initially set the SecRuleEngine to On? ==
 
-No. Every Ruleset can have false positive in new environments and any new installation should initially use the log only Ruleset version or if no such version is available, set ModSecurity to Detection only using the SecRuleEngine DetectionOnly command. After running ModSecurity in a detection only mode for a while review the evens generated and decide if any modification to the rule set should be made before moving to protection mode.
+No. Every Ruleset can have false positives in new environments and any new installation should initially use the log only Ruleset version or if no such version is available, set ModSecurity to Detection only using the SecRuleEngine DetectionOnly command. After running ModSecurity in a detection only mode for a while review the evens generated and decide if any modification to the rule set should be made before moving to protection mode.
 
 == How do I get ModSecurity to inspect request and response bodies? ==
 
